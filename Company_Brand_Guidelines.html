@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FundFndr — Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy-900:  #0B1220;
+      --navy-700:  #16253D;
+      --blue:      #2F6BFF;
+      --blue-light:#7EB3FF;
+      --blue-soft: #DDE8FF;
+      --white:     #FFFFFF;
+      --off-white: #FAFAF8;
+      --gray-200:  #E6E8EE;
+      --gray-500:  #6B7280;
+      --gray-800:  #1F2937;
+      --serif:     'DM Serif Display', Georgia, serif;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--navy-900);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Cover */
+    .cover {
+      background: var(--navy-900);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(47,107,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47,107,255,0.05) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .cover-inner { position: relative; z-index: 1; }
+    .cover-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 40px;
+    }
+    .cover h1 {
+      font-family: var(--serif);
+      font-size: 72px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .cover h1 span { color: var(--blue-light); }
+    .cover-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 24px;
+    }
+    .cover-version {
+      position: absolute;
+      bottom: 48px;
+      left: 80px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      z-index: 1;
+    }
+
+    /* Page structure */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 60px;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 64px 0;
+    }
+
+    /* Section headers */
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--navy-900);
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    /* ── Logo ── */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .logo-swatch {
+      border-radius: 12px;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .logo-swatch.light { background: var(--white); border: 1px solid var(--gray-200); }
+    .logo-swatch.dark  { background: var(--navy-900); }
+
+    .logo-swatch img { height: 44px; width: auto; }
+
+    .logo-swatch-label {
+      font-size: 11px;
+      color: var(--gray-500);
+      letter-spacing: 0.04em;
+    }
+    .logo-swatch.dark .logo-swatch-label { color: rgba(255,255,255,0.3); }
+
+    .logo-rules {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .logo-rule {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .logo-rule-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 6px;
+    }
+
+    .logo-rule p {
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    /* ── Colors ── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .color-chip {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+
+    .color-swatch {
+      height: 80px;
+    }
+
+    .color-info {
+      background: var(--white);
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-size: 11px;
+      color: var(--gray-500);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .color-usage {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ── Typography ── */
+    .type-specimen {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 24px;
+    }
+
+    .type-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 12px;
+    }
+
+    .type-serif-display {
+      font-family: var(--serif);
+      font-size: 56px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--navy-900);
+    }
+
+    .type-serif-h2 {
+      font-family: var(--serif);
+      font-size: 40px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--navy-900);
+    }
+
+    .type-sans-ui {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--gray-500);
+    }
+
+    .type-sans-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .type-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+    }
+
+    .type-table th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .type-table td {
+      font-size: 13px;
+      color: var(--gray-800);
+      padding: 12px;
+      border-bottom: 1px solid var(--gray-200);
+      vertical-align: top;
+    }
+
+    .type-table tr:last-child td { border-bottom: none; }
+
+    .mono {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      background: var(--off-white);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--blue);
+    }
+
+    /* ── Buttons ── */
+    .button-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .btn-demo-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 24px;
+      border-radius: 6px;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-demo-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--navy-900);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 24px;
+      border-radius: 6px;
+      border: 1px solid var(--gray-200);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-demo-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: rgba(255,255,255,0.75);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 24px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.18);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-context-dark {
+      background: var(--navy-900);
+      padding: 24px 32px;
+      border-radius: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .spec-table th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .spec-table td {
+      font-size: 13px;
+      color: var(--gray-800);
+      padding: 12px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .spec-table tr:last-child td { border-bottom: none; }
+
+    /* ── Spacing & Layout ── */
+    .spacing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .spacing-chip {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .spacing-bar {
+      background: var(--blue-soft);
+      border-radius: 4px;
+      height: 6px;
+    }
+
+    .spacing-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy-900);
+    }
+
+    .spacing-value {
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+
+    /* ── Icons ── */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .icon-chip {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-chip svg { color: var(--blue); }
+
+    .icon-name {
+      font-size: 11px;
+      color: var(--gray-500);
+      text-align: center;
+    }
+
+    /* ── Section Patterns ── */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .pattern-chip {
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .pattern-chip.light { background: var(--off-white); }
+    .pattern-chip.dark  { background: var(--navy-900); border-color: transparent; }
+
+    .pattern-chip-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--gray-500);
+    }
+
+    .pattern-chip.dark .pattern-chip-label { color: rgba(255,255,255,0.3); }
+
+    .pattern-chip h3 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--navy-900);
+      margin-bottom: 8px;
+    }
+
+    .pattern-chip.dark h3 { color: var(--white); }
+
+    .pattern-chip p {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.65;
+    }
+
+    .pattern-chip.dark p { color: rgba(255,255,255,0.45); }
+
+    .section-flow {
+      display: flex;
+      gap: 4px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .flow-block {
+      flex: 1;
+      min-width: 80px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+
+    .flow-block.dark  { background: var(--navy-900); color: rgba(255,255,255,0.7); }
+    .flow-block.light { background: var(--white); color: var(--gray-500); border: 1px solid var(--gray-200); }
+
+    @media print {
+      body { background: white; }
+      .cover { min-height: auto; padding: 60px; }
+      .page { padding: 60px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Cover ── -->
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-label">FundFndr · Brand Guidelines</div>
+      <h1>Brand<br/><span>Standards</span></h1>
+      <p class="cover-sub">Typography, color, logo, components, and layout patterns<br/>for all FundFndr digital touchpoints.</p>
+    </div>
+    <div class="cover-version">Version 2.0 · 2026</div>
+  </div>
+
+  <!-- ── Logo ── -->
+  <div class="page">
+    <div class="section-title">01 — Logo</div>
+    <h2>Mark & Wordmark</h2>
+    <p class="section-desc">The FundFndr logo consists of an FF monogram mark inside a circle and the "FundFndr" wordmark in Inter Semibold. Always use the supplied SVG files — never recreate or rasterize.</p>
+
+    <div class="logo-grid">
+      <div class="logo-swatch light">
+        <img src="fundfndr-logo.svg" alt="FundFndr logo — dark" />
+        <div class="logo-swatch-label">Primary — use on white & light backgrounds</div>
+      </div>
+      <div class="logo-swatch dark">
+        <img src="fundfndr-logo-white.svg" alt="FundFndr logo — white" />
+        <div class="logo-swatch-label">Reversed — use on navy & dark backgrounds</div>
+      </div>
+    </div>
+
+    <div class="logo-rules">
+      <div class="logo-rule">
+        <div class="logo-rule-title">Minimum size</div>
+        <p>Nav/UI: 44px height minimum. Footer/marketing: 48px height minimum. Never render below 36px.</p>
+      </div>
+      <div class="logo-rule">
+        <div class="logo-rule-title">Clear space</div>
+        <p>Maintain a minimum of 24px of clear space on all sides of the logo at all times.</p>
+      </div>
+      <div class="logo-rule">
+        <div class="logo-rule-title">Don'ts</div>
+        <p>Do not recolor, stretch, rotate, add drop shadows, place on busy backgrounds, or use the mark without the wordmark.</p>
+      </div>
+    </div>
+
+    <hr class="section-divider" />
+
+    <!-- ── Color ── -->
+    <div class="section-title">02 — Color</div>
+    <h2>Palette</h2>
+    <p class="section-desc">A high-contrast navy-and-blue palette with warm off-white for light surfaces. Never substitute with default framework colors.</p>
+
+    <div class="color-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#0B1220;"></div>
+        <div class="color-info">
+          <div class="color-name">Navy 900</div>
+          <div class="color-hex">#0B1220</div>
+          <div class="color-usage">Hero, Features, CTA, text on white</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#16253D;"></div>
+        <div class="color-info">
+          <div class="color-name">Navy 700</div>
+          <div class="color-hex">#16253D</div>
+          <div class="color-usage">Footer background</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#2F6BFF;"></div>
+        <div class="color-info">
+          <div class="color-name">Electric Blue</div>
+          <div class="color-hex">#2F6BFF</div>
+          <div class="color-usage">Primary CTA, links, logo mark, accents</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#7EB3FF;"></div>
+        <div class="color-info">
+          <div class="color-name">Blue Light</div>
+          <div class="color-hex">#7EB3FF</div>
+          <div class="color-usage">Icons on dark, gradient endpoint</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#DDE8FF;"></div>
+        <div class="color-info">
+          <div class="color-name">Blue Soft</div>
+          <div class="color-hex">#DDE8FF</div>
+          <div class="color-usage">Badges on light backgrounds</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#FAFAF8; border: 1px solid #E6E8EE;"></div>
+        <div class="color-info">
+          <div class="color-name">Off-White</div>
+          <div class="color-hex">#FAFAF8</div>
+          <div class="color-usage">Light section alt backgrounds</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#E6E8EE;"></div>
+        <div class="color-info">
+          <div class="color-name">Gray 200</div>
+          <div class="color-hex">#E6E8EE</div>
+          <div class="color-usage">Borders, dividers on light surfaces</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#6B7280;"></div>
+        <div class="color-info">
+          <div class="color-name">Gray 500</div>
+          <div class="color-hex">#6B7280</div>
+          <div class="color-usage">Body text on light backgrounds</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider" />
+
+    <!-- ── Typography ── -->
+    <div class="section-title">03 — Typography</div>
+    <h2>Type System</h2>
+    <p class="section-desc">Two typefaces: DM Serif Display for all headings (elegance, authority), Inter for all UI and body copy (legibility, precision). Never swap or mix roles.</p>
+
+    <div class="type-specimen">
+      <div class="type-label">DM Serif Display — Heading / Display</div>
+      <div class="type-serif-display">Compare funds.<br/><span style="color: var(--blue);">Invest with confidence.</span></div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-label">DM Serif Display — Section Heading (h2)</div>
+      <div class="type-serif-h2">Everything you need to pick the right fund</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-label">Inter — Body & UI</div>
+      <div class="type-sans-label" style="margin-bottom:12px;">Features</div>
+      <div class="type-sans-ui">Research, review, and compare ETFs and mutual funds side by side — fees, returns, holdings, and risk — so you always know which investment is right for you.</div>
+    </div>
+
+    <table class="type-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Font</th>
+          <th>Size</th>
+          <th>Weight</th>
+          <th>Letter-spacing</th>
+          <th>Line-height</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hero h1</td>
+          <td>DM Serif Display</td>
+          <td>clamp(48px, 6vw, 64px)</td>
+          <td>400</td>
+          <td>−0.02em</td>
+          <td>1.05</td>
+        </tr>
+        <tr>
+          <td>Section h2</td>
+          <td>DM Serif Display</td>
+          <td>clamp(32px, 4vw, 44px)</td>
+          <td>400</td>
+          <td>−0.02em</td>
+          <td>1.15</td>
+        </tr>
+        <tr>
+          <td>Card h3</td>
+          <td>Inter</td>
+          <td>17–18px</td>
+          <td>600</td>
+          <td>−0.01em</td>
+          <td>1.25</td>
+        </tr>
+        <tr>
+          <td>Body</td>
+          <td>Inter</td>
+          <td>14–17px</td>
+          <td>400</td>
+          <td>0</td>
+          <td>1.70</td>
+        </tr>
+        <tr>
+          <td>Nav links</td>
+          <td>Inter</td>
+          <td>14px</td>
+          <td>400</td>
+          <td>+0.01em</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Button</td>
+          <td>Inter</td>
+          <td>14–15px</td>
+          <td>500</td>
+          <td>+0.01em</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Section label</td>
+          <td>Inter</td>
+          <td>10–11px</td>
+          <td>600–700</td>
+          <td>+0.10–0.14em</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="section-divider" />
+
+    <!-- ── Buttons ── -->
+    <div class="section-title">04 — Components</div>
+    <h2>Buttons</h2>
+    <p class="section-desc">Two variants: Primary (filled blue) and Secondary (outlined). Both use Inter 500, 6px border-radius, and refined proportions. Avoid oversized padding.</p>
+
+    <div class="button-row" style="margin-bottom: 16px;">
+      <div class="btn-demo-primary">Get started free →</div>
+      <div class="btn-demo-secondary">See how it works</div>
+    </div>
+
+    <div class="btn-context-dark" style="margin-bottom: 32px;">
+      <div class="btn-demo-primary">Get started free →</div>
+      <div class="btn-demo-ghost">View a sample comparison</div>
+    </div>
+
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Primary</th>
+          <th>Secondary (light)</th>
+          <th>Ghost (dark bg)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Background</td>
+          <td><span class="mono">#2F6BFF</span></td>
+          <td>Transparent</td>
+          <td>Transparent</td>
+        </tr>
+        <tr>
+          <td>Text color</td>
+          <td><span class="mono">#FFFFFF</span></td>
+          <td><span class="mono">#0B1220</span></td>
+          <td><span class="mono">rgba(255,255,255,0.75)</span></td>
+        </tr>
+        <tr>
+          <td>Border</td>
+          <td>None</td>
+          <td><span class="mono">1px solid #E6E8EE</span></td>
+          <td><span class="mono">1px solid rgba(255,255,255,0.18)</span></td>
+        </tr>
+        <tr>
+          <td>Border-radius</td>
+          <td><span class="mono">6px</span></td>
+          <td><span class="mono">6px</span></td>
+          <td><span class="mono">6px</span></td>
+        </tr>
+        <tr>
+          <td>Padding (default)</td>
+          <td><span class="mono">11px 24px</span></td>
+          <td><span class="mono">11px 24px</span></td>
+          <td><span class="mono">11px 24px</span></td>
+        </tr>
+        <tr>
+          <td>Padding (hero/CTA)</td>
+          <td><span class="mono">14px 30px</span></td>
+          <td><span class="mono">14px 30px</span></td>
+          <td><span class="mono">14px 30px</span></td>
+        </tr>
+        <tr>
+          <td>Hover</td>
+          <td>bg <span class="mono">#1e57f0</span>, translateY(−1px)</td>
+          <td>border <span class="mono">#2F6BFF</span>, translateY(−1px)</td>
+          <td>border <span class="mono">rgba(255,255,255,0.45)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="section-divider" />
+
+    <!-- ── Icons ── -->
+    <h2>Icons</h2>
+    <p class="section-desc">Thin stroke SVG icons — 1.5px stroke-width, no fill background containers. On light surfaces use Electric Blue; on dark surfaces use Blue Light.</p>
+
+    <div class="icon-grid">
+      <div class="icon-chip">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/>
+        </svg>
+        <div class="icon-name">Comparison</div>
+      </div>
+      <div class="icon-chip">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>
+        </svg>
+        <div class="icon-name">Profile</div>
+      </div>
+      <div class="icon-chip">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 19 9 5 6 12 2 12"/>
+        </svg>
+        <div class="icon-name">Performance</div>
+      </div>
+      <div class="icon-chip">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <div class="icon-name">Reviews</div>
+      </div>
+      <div class="icon-chip">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+          <circle cx="9" cy="6" r="2.5" fill="currentColor" stroke="none"/>
+          <circle cx="15" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+          <circle cx="9" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+        </svg>
+        <div class="icon-name">Screener</div>
+      </div>
+      <div class="icon-chip">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
+        </svg>
+        <div class="icon-name">Portfolio</div>
+      </div>
+    </div>
+
+    <hr class="section-divider" />
+
+    <!-- ── Spacing ── -->
+    <div class="section-title">05 — Layout</div>
+    <h2>Spacing & Layout</h2>
+    <p class="section-desc">Generous, intentional spacing signals quality. Use the token scale — never arbitrary values.</p>
+
+    <div class="spacing-grid" style="margin-bottom: 40px;">
+      <div class="spacing-chip">
+        <div class="spacing-bar" style="width:100%;"></div>
+        <div class="spacing-label">Section padding</div>
+        <div class="spacing-value">128px top/bottom · 88px on mobile</div>
+      </div>
+      <div class="spacing-chip">
+        <div class="spacing-bar" style="width:75%;"></div>
+        <div class="spacing-label">Container</div>
+        <div class="spacing-value">max-width 1120px · 24px side padding</div>
+      </div>
+      <div class="spacing-chip">
+        <div class="spacing-bar" style="width:50%;"></div>
+        <div class="spacing-label">Nav height</div>
+        <div class="spacing-value">68px · sticky · frosted glass</div>
+      </div>
+      <div class="spacing-chip">
+        <div class="spacing-bar" style="width:35%;"></div>
+        <div class="spacing-label">Card padding</div>
+        <div class="spacing-value">36–40px</div>
+      </div>
+      <div class="spacing-chip">
+        <div class="spacing-bar" style="width:25%;"></div>
+        <div class="spacing-label">Card gap</div>
+        <div class="spacing-value">24–28px between cards</div>
+      </div>
+      <div class="spacing-chip">
+        <div class="spacing-bar" style="width:15%;"></div>
+        <div class="spacing-label">Border radius</div>
+        <div class="spacing-value">6px buttons · 12px cards · 999px badges</div>
+      </div>
+    </div>
+
+    <h2 style="font-size: 24px; margin-bottom: 12px;">Section Rhythm</h2>
+    <p class="section-desc" style="margin-bottom: 24px;">Sections alternate dark and light to create visual rhythm. Never run two dark or two light sections back to back.</p>
+
+    <div class="section-flow">
+      <div class="flow-block dark">Hero<br/><span style="font-weight:400;font-size:10px;opacity:0.6;">dark</span></div>
+      <div class="flow-block light">How it works<br/><span style="font-weight:400;font-size:10px;opacity:0.6;">off-white</span></div>
+      <div class="flow-block dark">Features<br/><span style="font-weight:400;font-size:10px;opacity:0.6;">dark</span></div>
+      <div class="flow-block light">Testimonials<br/><span style="font-weight:400;font-size:10px;opacity:0.6;">white</span></div>
+      <div class="flow-block dark">CTA<br/><span style="font-weight:400;font-size:10px;opacity:0.6;">dark</span></div>
+      <div class="flow-block dark">Footer<br/><span style="font-weight:400;font-size:10px;opacity:0.6;">navy-700</span></div>
+    </div>
+
+    <hr class="section-divider" />
+
+    <!-- ── Voice ── -->
+    <div class="section-title">06 — Voice</div>
+    <h2>Brand Voice</h2>
+    <p class="section-desc">FundFndr speaks like a trusted, informed friend — not a sales deck or a robo-advisor. Precise, calm, confident.</p>
+
+    <table class="spec-table">
+      <thead>
+        <tr><th>Attribute</th><th>Do</th><th>Don't</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Confident</strong></td>
+          <td>"The clearest way to compare funds."</td>
+          <td>"We try to help investors maybe find…"</td>
+        </tr>
+        <tr>
+          <td><strong>Precise</strong></td>
+          <td>"10,000+ ETFs tracked. Updated daily."</td>
+          <td>"Tons of funds. Super up to date!"</td>
+        </tr>
+        <tr>
+          <td><strong>Calm</strong></td>
+          <td>"Invest with clarity."</td>
+          <td>"Stop losing money NOW!"</td>
+        </tr>
+        <tr>
+          <td><strong>Empowering</strong></td>
+          <td>"Backed by data, not guesswork."</td>
+          <td>"We'll tell you exactly what to buy."</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="height: 80px;"></div>
+
+    <div style="text-align: center; color: var(--gray-500); font-size: 12px; border-top: 1px solid var(--gray-200); padding-top: 24px;">
+      FundFndr Brand Guidelines · Version 2.0 · 2026 · Internal use only
+    </div>
+  </div>
+
+</body>
+</html>
