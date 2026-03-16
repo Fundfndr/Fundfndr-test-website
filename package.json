@@ -11,6 +11,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "puppeteer": "^24.37.5"
+    "puppeteer": "^24.37.5",
+    "yahoo-finance2": "^3.13.2"
   }
 }

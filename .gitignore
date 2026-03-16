@@ -3,3 +3,4 @@ temporary screenshots/
 *.pdf
 *.png
 .DS_Store
+.vercel

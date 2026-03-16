@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mutual Funds — FundFndr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #FAFAF8;
+      --white:      #FFFFFF;
+      --navy:       #0B1220;
+      --navy-2:     #16253D;
+      --navy-3:     #1C2E4A;
+      --text:       #0B1220;
+      --text-2:     #6B7280;
+      --text-3:     #9CA3AF;
+      --border:     #E6E8EE;
+      --border-2:   #D1D5DB;
+      --blue:       #2F6BFF;
+      --blue-light: #7EB3FF;
+      --blue-soft:  #DDE8FF;
+      --green:      #34D399;
+      --red:        #F87171;
+      --violet:     #A78BFA;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    h1, h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-logo img { height: 34px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--text-2);
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--navy); background: rgba(11,18,32,0.05); }
+    .nav-links a.active { color: var(--navy); font-weight: 500; background: rgba(11,18,32,0.05); }
+
+    .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .nav-login {
+      font-size: 13.5px;
+      color: var(--text-2);
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+    .nav-login:hover { color: var(--navy); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      box-shadow: 0 1px 3px rgba(47,107,255,0.3);
+    }
+    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(47,107,255,0.35); }
+    .btn-primary:active { opacity: 0.75; }
+
+    /* ── Page Header ──────────────────────────────────────── */
+    .page-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0 28px;
+    }
+
+    .page-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-3);
+      margin-bottom: 14px;
+    }
+    .breadcrumb a { color: var(--text-3); transition: color 0.15s; }
+    .breadcrumb a:hover { color: var(--text-2); }
+
+    .page-header h1 {
+      font-size: 34px;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      font-size: 15px;
+      color: var(--text-2);
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* ── Search + Filter Strip ─────────────────────────────── */
+    .header-controls {
+      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 280px;
+      padding: 9px 12px 9px 34px;
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      color: var(--text);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-input::placeholder { color: var(--text-3); }
+    .search-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(47,107,255,0.1);
+    }
+
+    /* ── Category Tabs ─────────────────────────────────────── */
+    .category-tabs {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+    }
+
+    .category-tabs-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .category-tabs-inner::-webkit-scrollbar { display: none; }
+
+    .cat-tab {
+      padding: 12px 16px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .cat-tab:hover { color: var(--navy); }
+    .cat-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+
+    /* ── Main App ─────────────────────────────────────────── */
+    .browse-app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 40px 60px;
+    }
+
+    /* ── Dashboard Card ────────────────────────────────────── */
+    .compare-dashboard {
+      background: var(--navy);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 2px 8px rgba(11,18,32,0.12),
+        0 12px 40px rgba(11,18,32,0.22),
+        0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    /* ── Stats Bar ─────────────────────────────────────────── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat-cell {
+      padding: 18px 24px;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat-cell:last-child { border-right: none; }
+
+    .stat-cell-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 6px;
+    }
+
+    .stat-cell-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .stat-cell-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 3px;
+    }
+
+    /* ── Table ─────────────────────────────────────────────── */
+    .fund-table-wrap {
+      overflow-x: auto;
+    }
+
+    table.fund-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .fund-table thead tr {
+      background: rgba(255,255,255,0.025);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .fund-table thead th {
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+    .fund-table thead th:hover { color: rgba(255,255,255,0.6); }
+    .fund-table thead th.sorted { color: rgba(255,255,255,0.75); }
+
+    .th-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sort-arrow {
+      opacity: 0.4;
+      font-size: 9px;
+      line-height: 1;
+    }
+    th.sorted .sort-arrow { opacity: 1; color: var(--blue-light); }
+
+    .fund-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .fund-table tbody tr:hover { background: rgba(47,107,255,0.07); }
+    .fund-table tbody tr.row-selected { background: rgba(47,107,255,0.12); }
+    .fund-table tbody tr:last-child { border-bottom: none; }
+
+    .fund-table td {
+      padding: 13px 16px;
+      vertical-align: middle;
+    }
+
+    .td-symbol {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .td-name {
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    .td-category {
+      display: inline-block;
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .td-num {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .td-num.col-return { text-align: right; }
+
+    .compare-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      background: rgba(47,107,255,0.15);
+      color: var(--blue-light);
+      border: 1px solid rgba(47,107,255,0.3);
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .compare-btn:hover {
+      background: rgba(47,107,255,0.28);
+      border-color: rgba(47,107,255,0.55);
+      color: #fff;
+    }
+    .compare-btn:active { transform: translateY(1px); }
+
+    /* ── Skeleton loading ─────────────────────────────────── */
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skel {
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0.05) 25%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0.05) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .skel-row td { padding: 14px 16px; }
+
+    /* ── Empty state ──────────────────────────────────────── */
+    .empty-state {
+      padding: 60px 24px;
+      text-align: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 14px;
+    }
+
+    /* ── Disclaimer ───────────────────────────────────────── */
+    .disclaimer {
+      margin-top: 16px;
+      padding: 13px 18px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .disclaimer svg { flex-shrink: 0; margin-top: 1px; }
+
+    .disclaimer p {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.65;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    .site-footer {
+      background: var(--navy);
+      padding: 40px 0 32px;
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo img { height: 28px; width: auto; display: block; }
+
+    .footer-copy {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 8px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── Multi-select bar ─────────────────────────────────── */
+    .select-bar {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(11,18,32,0.45), 0 2px 8px rgba(11,18,32,0.3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px 10px 16px;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .select-bar.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(-50%) translateY(0);
+    }
+    .select-bar-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+    }
+    .select-chips {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+    .select-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .select-chip-remove {
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      line-height: 1;
+      font-size: 14px;
+      transition: color 0.1s;
+    }
+    .select-chip-remove:hover { color: #fff; }
+    .select-bar-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.1);
+    }
+    .select-bar-compare {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .select-bar-compare:hover { opacity: 0.88; }
+    .select-bar-clear {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 5px;
+      transition: color 0.1s, background 0.1s;
+    }
+    .select-bar-clear:hover { color: #fff; background: rgba(255,255,255,0.06); }
+
+    /* Row selected state */
+    .fund-table tbody tr.row-selected { background: rgba(47,107,255,0.1); }
+    .fund-table tbody tr.row-selected td:first-child { border-left: 2px solid var(--blue); }
+
+    /* Compare button — toggle to "selected" state */
+    .compare-btn.is-selected {
+      background: rgba(47,107,255,0.2);
+      border-color: rgba(47,107,255,0.5);
+      color: #7EB3FF;
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .page-header-inner,
+      .browse-app { padding-left: 20px; padding-right: 20px; }
+
+      .category-tabs { padding: 0 20px; }
+
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat-cell:nth-child(2) { border-right: none; }
+      .stat-cell:nth-child(3),
+      .stat-cell:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.05); }
+
+      .nav-links { display: none; }
+
+      .search-input { width: 100%; }
+      .header-controls { flex-direction: column; align-items: flex-start; }
+
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ────────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="fundfndr-logo.svg" alt="FundFndr" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="http://localhost:3000/compare.html">Compare</a></li>
+        <li><a href="http://localhost:3000/etfs.html">ETFs</a></li>
+        <li><a href="http://localhost:3000/mutual-funds.html" class="active">Mutual Funds</a></li>
+        <li><a href="#">Screener</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#" class="nav-login">Login</a>
+        <a href="#" class="btn-primary">Get started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Page Header ────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span style="opacity:0.5;">›</span>
+        <span>Mutual Funds</span>
+      </div>
+      <h1>Mutual Funds</h1>
+      <p>Explore actively managed and index mutual funds — compare returns, expenses, and portfolio composition side by side.</p>
+
+      <div class="header-controls">
+        <div class="search-input-wrap">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="6" cy="6" r="4.5" stroke="#9CA3AF" stroke-width="1.4"/>
+            <path d="M9.5 9.5L12.5 12.5" stroke="#9CA3AF" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <input class="search-input" id="fund-search" type="text" placeholder="Search by name or ticker…" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Category Tabs ──────────────────────────────────────── -->
+  <div class="category-tabs">
+    <div class="category-tabs-inner" id="cat-tabs">
+      <button class="cat-tab active" data-cat="All">All</button>
+      <button class="cat-tab" data-cat="Large Cap">Large Cap</button>
+      <button class="cat-tab" data-cat="Balanced">Balanced</button>
+      <button class="cat-tab" data-cat="Bond">Bond</button>
+      <button class="cat-tab" data-cat="International">International</button>
+      <button class="cat-tab" data-cat="Target Date">Target Date</button>
+    </div>
+  </div>
+
+  <!-- ── App ────────────────────────────────────────────────── -->
+  <main class="browse-app">
+
+    <div class="compare-dashboard">
+
+      <!-- Stats Bar -->
+      <div class="stats-bar" id="stats-bar">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Total Funds</div>
+          <div class="stat-cell-value" id="stat-count">—</div>
+          <div class="stat-cell-sub">in current view</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Avg Expense Ratio</div>
+          <div class="stat-cell-value" id="stat-avg-er">—</div>
+          <div class="stat-cell-sub">across visible funds</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Best YTD</div>
+          <div class="stat-cell-value" id="stat-best-ytd">—</div>
+          <div class="stat-cell-sub" id="stat-best-ytd-sym">loading…</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Lowest Expense Ratio</div>
+          <div class="stat-cell-value" id="stat-low-er">—</div>
+          <div class="stat-cell-sub" id="stat-low-er-sym">loading…</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="fund-table-wrap">
+        <table class="fund-table" id="fund-table">
+          <thead>
+            <tr>
+              <th data-col="symbol" style="width:180px;">
+                <span class="th-inner">Symbol <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="category">
+                <span class="th-inner">Category <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="ytd" style="text-align:right;">
+                <span class="th-inner">YTD <span class="sort-arrow">↓</span></span>
+              </th>
+              <th data-col="1y" style="text-align:right;">
+                <span class="th-inner">1Y <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="3y" style="text-align:right;">
+                <span class="th-inner">3Y <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="5y" style="text-align:right;">
+                <span class="th-inner">5Y <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="er" style="text-align:right;">
+                <span class="th-inner">Exp. Ratio <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="aum" style="text-align:right;">
+                <span class="th-inner">AUM <span class="sort-arrow">↕</span></span>
+              </th>
+              <th style="text-align:right; cursor:default;">Compare</th>
+            </tr>
+          </thead>
+          <tbody id="fund-tbody">
+            <!-- Skeleton rows rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="6" stroke="#9CA3AF" stroke-width="1.2"/>
+        <path d="M7 5.5V8.5" stroke="#9CA3AF" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="7" cy="4" r="0.65" fill="#9CA3AF"/>
+      </svg>
+      <p>Data sourced from Yahoo Finance and updated in real time. Past performance is not indicative of future results. This tool is for informational purposes only and does not constitute investment advice.</p>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="footer-logo">
+          <img src="fundfndr-logo-white.svg" alt="FundFndr" />
+        </a>
+        <div class="footer-copy">© 2026 FundFndr. For informational purposes only.</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="http://localhost:3000/compare.html">Compare</a></li>
+        <li><a href="http://localhost:3000/etfs.html">ETFs</a></li>
+        <li><a href="http://localhost:3000/mutual-funds.html">Mutual Funds</a></li>
+        <li><a href="#">Screener</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Multi-select compare bar -->
+  <div class="select-bar" id="select-bar">
+    <span class="select-bar-label">Compare</span>
+    <div class="select-chips" id="select-chips"></div>
+    <div class="select-bar-divider"></div>
+    <button class="select-bar-compare" id="select-bar-compare">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 6H10M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Compare funds
+    </button>
+    <span class="select-bar-clear" id="select-bar-clear">Clear all</span>
+  </div>
+
+  <script>
+  (function () {
+
+    // ── Fund definitions ──────────────────────────────────────
+    const FUNDS = [
+      { symbol: 'FXAIX', name: 'Fidelity 500 Index Fund',              category: 'Large Cap' },
+      { symbol: 'VFIAX', name: 'Vanguard 500 Index Admiral',           category: 'Large Cap' },
+      { symbol: 'SWPPX', name: 'Schwab S&P 500 Index Fund',            category: 'Large Cap' },
+      { symbol: 'VTSAX', name: 'Vanguard Total Stock Market Index',    category: 'Large Cap' },
+      { symbol: 'FSKAX', name: 'Fidelity Total Market Index Fund',     category: 'Large Cap' },
+      { symbol: 'FCNTX', name: 'Fidelity Contrafund',                  category: 'Large Cap' },
+      { symbol: 'PRGFX', name: 'T. Rowe Price Growth Stock Fund',      category: 'Large Cap' },
+      { symbol: 'DODGX', name: 'Dodge &amp; Cox Stock Fund',           category: 'Large Cap' },
+      { symbol: 'AGTHX', name: 'American Funds Growth Fund of America',category: 'Large Cap' },
+      { symbol: 'VBTLX', name: 'Vanguard Total Bond Market Index',     category: 'Bond'      },
+      { symbol: 'PTTRX', name: 'PIMCO Total Return Fund',              category: 'Bond'      },
+      { symbol: 'VWELX', name: 'Vanguard Wellington Fund',             category: 'Balanced'  },
+      { symbol: 'VWINX', name: 'Vanguard Wellesley Income Fund',       category: 'Balanced'  },
+      { symbol: 'VTMFX', name: 'Vanguard Tax-Managed Balanced Fund',   category: 'Balanced'  },
+      { symbol: 'VGTSX', name: 'Vanguard Total Intl Stock Index',      category: 'International' },
+      { symbol: 'FSPSX', name: 'Fidelity International Index Fund',    category: 'International' },
+    ];
+
+    // ── State ─────────────────────────────────────────────────
+    const state = {
+      sort: { col: 'ytd', dir: 'desc' },
+      filter: { category: 'All', search: '' },
+    };
+
+    const selected = new Set(); // tracks selected symbols
+
+    // Live data keyed by symbol
+    const quotes = {};  // symbol → { expRatio, aum }
+    const charts = {};  // symbol → { closes[] }
+
+    // ── Helpers ───────────────────────────────────────────────
+
+    function calcReturn(closes, months) {
+      const sliced = closes.slice(-months).filter(v => v != null);
+      if (sliced.length < 2) return null;
+      return (sliced[sliced.length - 1] / sliced[0] - 1) * 100;
+    }
+
+    function getMonths(period) {
+      return { YTD: Math.max(2, new Date().getMonth() + 1), '1Y': 12, '3Y': 36, '5Y': 60 }[period] || 12;
+    }
+
+    function fmtPct(v) {
+      if (v == null) return '—';
+      return (v >= 0 ? '+' : '') + v.toFixed(1) + '%';
+    }
+
+    function fmtPctColored(v) {
+      if (v == null) return '<span style="color:rgba(255,255,255,0.3);">—</span>';
+      const color = v >= 0 ? '#34D399' : '#F87171';
+      return `<span style="color:${color};">${fmtPct(v)}</span>`;
+    }
+
+    function fmtER(v) {
+      if (v == null) return '<span style="color:rgba(255,255,255,0.3);">—</span>';
+      const pct = (v * 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '') + '%';
+      return `<span style="color:rgba(255,255,255,0.75);">${pct}</span>`;
+    }
+
+    function fmtAUM(v) {
+      if (v == null) return '<span style="color:rgba(255,255,255,0.3);">—</span>';
+      let s;
+      if (v >= 1e12) s = '$' + (v / 1e12).toFixed(1) + 'T';
+      else if (v >= 1e9) s = '$' + (v / 1e9).toFixed(0) + 'B';
+      else if (v >= 1e6) s = '$' + (v / 1e6).toFixed(0) + 'M';
+      else s = '$' + v;
+      return `<span style="color:rgba(255,255,255,0.75);">${s}</span>`;
+    }
+
+    function fmtERDisplay(v) {
+      if (v == null) return '—';
+      return (v * 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '') + '%';
+    }
+
+    // ── Data accessors ────────────────────────────────────────
+
+    function getRow(fund) {
+      const c = charts[fund.symbol] || { closes: [] };
+      const q = quotes[fund.symbol] || {};
+      return {
+        symbol:   fund.symbol,
+        name:     fund.name,
+        category: fund.category,
+        ytd:      calcReturn(c.closes, getMonths('YTD')),
+        y1:       calcReturn(c.closes, 12),
+        y3:       calcReturn(c.closes, 36),
+        y5:       calcReturn(c.closes, 60),
+        er:       q.expRatio ?? null,
+        aum:      q.aum ?? null,
+      };
+    }
+
+    // ── Filter + Sort ─────────────────────────────────────────
+
+    function getVisible() {
+      const search = state.filter.search.toLowerCase();
+      const cat    = state.filter.category;
+
+      return FUNDS
+        .filter(f => {
+          if (cat !== 'All' && f.category !== cat) return false;
+          if (search) {
+            return f.symbol.toLowerCase().includes(search)
+                || f.name.toLowerCase().includes(search);
+          }
+          return true;
+        })
+        .map(getRow)
+        .sort((a, b) => {
+          const { col, dir } = state.sort;
+          const colMap = { symbol: 'symbol', category: 'category', ytd: 'ytd', '1y': 'y1', '3y': 'y3', '5y': 'y5', er: 'er', aum: 'aum' };
+          const key = colMap[col] || 'ytd';
+          const va = a[key];
+          const vb = b[key];
+          if (va == null && vb == null) return 0;
+          if (va == null) return 1;
+          if (vb == null) return -1;
+          if (typeof va === 'string') {
+            return dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+          }
+          return dir === 'asc' ? va - vb : vb - va;
+        });
+    }
+
+    // ── Render Stats Bar ──────────────────────────────────────
+
+    function renderStats(rows) {
+      document.getElementById('stat-count').textContent = rows.length;
+
+      const withER = rows.filter(r => r.er != null);
+      if (withER.length > 0) {
+        const avgER = withER.reduce((s, r) => s + r.er, 0) / withER.length;
+        document.getElementById('stat-avg-er').textContent = fmtERDisplay(avgER);
+      } else {
+        document.getElementById('stat-avg-er').textContent = '—';
+      }
+
+      const withYTD = rows.filter(r => r.ytd != null);
+      if (withYTD.length > 0) {
+        const best = withYTD.reduce((a, b) => (b.ytd > a.ytd ? b : a));
+        const bestEl = document.getElementById('stat-best-ytd');
+        bestEl.textContent = fmtPct(best.ytd);
+        bestEl.style.color = best.ytd >= 0 ? '#34D399' : '#F87171';
+        document.getElementById('stat-best-ytd-sym').textContent = best.symbol;
+      } else {
+        document.getElementById('stat-best-ytd').textContent = '—';
+        document.getElementById('stat-best-ytd-sym').textContent = 'loading…';
+      }
+
+      if (withER.length > 0) {
+        const lowest = withER.reduce((a, b) => (b.er < a.er ? b : a));
+        document.getElementById('stat-low-er').textContent = fmtERDisplay(lowest.er);
+        document.getElementById('stat-low-er-sym').textContent = lowest.symbol;
+      } else {
+        document.getElementById('stat-low-er').textContent = '—';
+        document.getElementById('stat-low-er-sym').textContent = 'loading…';
+      }
+    }
+
+    // ── Render Table ──────────────────────────────────────────
+
+    function renderTable() {
+      const rows = getVisible();
+      const tbody = document.getElementById('fund-tbody');
+      renderStats(rows);
+      updateSortHeaders();
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="empty-state">No funds match your search.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => `
+        <tr data-symbol="${r.symbol}">
+          <td>
+            <div class="td-symbol">${r.symbol}</div>
+            <div class="td-name">${r.name}</div>
+          </td>
+          <td><span class="td-category">${r.category}</span></td>
+          <td class="td-num col-return">${fmtPctColored(r.ytd)}</td>
+          <td class="td-num col-return">${fmtPctColored(r.y1)}</td>
+          <td class="td-num col-return">${fmtPctColored(r.y3)}</td>
+          <td class="td-num col-return">${fmtPctColored(r.y5)}</td>
+          <td class="td-num">${fmtER(r.er)}</td>
+          <td class="td-num">${fmtAUM(r.aum)}</td>
+          <td style="text-align:right;">
+            <button class="compare-btn" data-symbol="${r.symbol}">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <path d="M2 5.5H9M6.5 3L9 5.5L6.5 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Compare
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      // Toggle selection on compare-btn click
+      tbody.querySelectorAll('.compare-btn').forEach(btn => {
+        const sym = btn.dataset.symbol;
+        if (selected.has(sym)) btn.classList.add('is-selected');
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          toggleSelect(sym);
+        });
+      });
+
+      // Row click also toggles selection
+      tbody.querySelectorAll('tr[data-symbol]').forEach(tr => {
+        tr.addEventListener('click', () => toggleSelect(tr.dataset.symbol));
+      });
+    }
+
+    function toggleSelect(sym) {
+      if (selected.has(sym)) {
+        selected.delete(sym);
+      } else {
+        if (selected.size >= 5) return; // max 5
+        selected.add(sym);
+      }
+      // Update row + button visual state without full re-render
+      const tbody = document.getElementById('fund-tbody');
+      tbody.querySelectorAll('tr[data-symbol]').forEach(tr => {
+        const s = tr.dataset.symbol;
+        tr.classList.toggle('row-selected', selected.has(s));
+        const btn = tr.querySelector('.compare-btn');
+        if (btn) btn.classList.toggle('is-selected', selected.has(s));
+      });
+      renderSelectBar();
+    }
+
+    function renderSelectBar() {
+      const bar = document.getElementById('select-bar');
+      const chipsEl = document.getElementById('select-chips');
+      const compareBtn = document.getElementById('select-bar-compare');
+
+      bar.classList.toggle('visible', selected.size > 0);
+
+      chipsEl.innerHTML = [...selected].map(sym => `
+        <div class="select-chip">
+          ${sym}
+          <span class="select-chip-remove" data-sym="${sym}">&times;</span>
+        </div>
+      `).join('');
+
+      chipsEl.querySelectorAll('.select-chip-remove').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          toggleSelect(btn.dataset.sym);
+        });
+      });
+
+      compareBtn.onclick = () => {
+        if (!selected.size) return;
+        window.open('http://localhost:3000/compare.html?symbols=' + [...selected].join(','), '_blank');
+      };
+    }
+
+    document.getElementById('select-bar-clear').addEventListener('click', () => {
+      selected.clear();
+      document.getElementById('fund-tbody').querySelectorAll('tr[data-symbol]').forEach(tr => {
+        tr.classList.remove('row-selected');
+        const btn = tr.querySelector('.compare-btn');
+        if (btn) btn.classList.remove('is-selected');
+      });
+      renderSelectBar();
+    });
+
+    // ── Sort headers ──────────────────────────────────────────
+
+    function updateSortHeaders() {
+      document.querySelectorAll('#fund-table thead th[data-col]').forEach(th => {
+        const col = th.dataset.col;
+        const arrow = th.querySelector('.sort-arrow');
+        th.classList.toggle('sorted', col === state.sort.col);
+        if (arrow) {
+          if (col === state.sort.col) {
+            arrow.textContent = state.sort.dir === 'asc' ? '↑' : '↓';
+          } else {
+            arrow.textContent = '↕';
+          }
+        }
+      });
+    }
+
+    // ── Skeleton rows ─────────────────────────────────────────
+
+    function renderSkeleton() {
+      const tbody = document.getElementById('fund-tbody');
+      tbody.innerHTML = Array(10).fill(0).map(() => `
+        <tr class="skel-row">
+          <td><div class="skel" style="width:60px;height:14px;margin-bottom:5px;"></div><div class="skel" style="width:150px;height:10px;"></div></td>
+          <td><div class="skel" style="width:70px;height:20px;border-radius:5px;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:40px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:55px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:72px;height:28px;display:inline-block;border-radius:7px;"></div></td>
+        </tr>
+      `).join('');
+    }
+
+    // ── Data fetching ─────────────────────────────────────────
+
+    function processQuote(q) {
+      if (!q?.data) return {};
+      const { summaryDetail, fundProfile } = q.data;
+      const erRaw = fundProfile?.feesExpensesInvestment?.annualReportExpenseRatio
+                 ?? fundProfile?.feesExpensesInvestment?.netExpenseRatio;
+      return {
+        expRatio: typeof erRaw === 'number' ? erRaw : null,
+        aum:      summaryDetail?.totalAssets ?? null,
+      };
+    }
+
+    function processChart(json) {
+      const result = json?.chart?.result?.[0];
+      if (!result) return { closes: [] };
+      const closes = result.indicators?.adjclose?.[0]?.adjclose
+                  || result.indicators?.quote?.[0]?.close
+                  || [];
+      return { closes: closes.map(v => (v == null ? null : v)) };
+    }
+
+    async function loadBatch(syms) {
+      try {
+        const [quotesRes, ...chartResArr] = await Promise.all([
+          fetch(`/api/quote?symbols=${syms.join(',')}`).then(r => r.json()),
+          ...syms.map(sym => fetch(`/api/chart?symbol=${sym}&range=10y`).then(r => r.json())),
+        ]);
+        quotesRes.forEach(q => { quotes[q.symbol] = processQuote(q); });
+        syms.forEach((sym, i) => { charts[sym] = processChart(chartResArr[i]); });
+        renderTable();
+      } catch (err) {
+        console.error('Batch load error:', err);
+        renderTable();
+      }
+    }
+
+    async function loadAllData() {
+      renderSkeleton();
+      const allSymbols = FUNDS.map(f => f.symbol);
+      const BATCH = 5;
+      for (let i = 0; i < allSymbols.length; i += BATCH) {
+        const batch = allSymbols.slice(i, i + BATCH);
+        await loadBatch(batch);
+      }
+    }
+
+    // ── Events ────────────────────────────────────────────────
+
+    // Category tabs
+    document.getElementById('cat-tabs').addEventListener('click', e => {
+      const btn = e.target.closest('.cat-tab');
+      if (!btn) return;
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      state.filter.category = btn.dataset.cat;
+      renderTable();
+    });
+
+    // Search
+    document.getElementById('fund-search').addEventListener('input', e => {
+      state.filter.search = e.target.value.trim();
+      renderTable();
+    });
+
+    // Sort headers
+    document.querySelectorAll('#fund-table thead th[data-col]').forEach(th => {
+      th.addEventListener('click', () => {
+        const col = th.dataset.col;
+        if (state.sort.col === col) {
+          state.sort.dir = state.sort.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+          state.sort.col = col;
+          state.sort.dir = 'desc';
+        }
+        renderTable();
+      });
+    });
+
+    // ── URL param: ?category=Bond ─────────────────────────────
+    const urlCat = new URLSearchParams(location.search).get('category');
+    if (urlCat) {
+      state.filter.category = urlCat;
+      document.querySelectorAll('.cat-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.cat === urlCat);
+      });
+    }
+
+    // ── Boot ──────────────────────────────────────────────────
+    loadAllData();
+
+  })();
+  </script>
+
+</body>
+</html>
