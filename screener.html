@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fund Screener — FundFndr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #FAFAF8;
+      --white:      #FFFFFF;
+      --navy:       #0B1220;
+      --navy-2:     #16253D;
+      --navy-3:     #1C2E4A;
+      --text:       #0B1220;
+      --text-2:     #6B7280;
+      --text-3:     #9CA3AF;
+      --border:     #E6E8EE;
+      --border-2:   #D1D5DB;
+      --blue:       #2F6BFF;
+      --blue-light: #7EB3FF;
+      --blue-soft:  #DDE8FF;
+      --green:      #34D399;
+      --red:        #F87171;
+      --violet:     #A78BFA;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    h1, h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-logo img { height: 34px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--text-2);
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--navy); background: rgba(11,18,32,0.05); }
+    .nav-links a.active { color: var(--navy); font-weight: 500; background: rgba(11,18,32,0.05); }
+
+    .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .nav-login {
+      font-size: 13.5px;
+      color: var(--text-2);
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+    .nav-login:hover { color: var(--navy); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      box-shadow: 0 1px 3px rgba(47,107,255,0.3);
+    }
+    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(47,107,255,0.35); }
+    .btn-primary:active { opacity: 0.75; }
+
+    /* ── Page Header ──────────────────────────────────────── */
+    .page-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0 28px;
+    }
+
+    .page-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-3);
+      margin-bottom: 14px;
+    }
+    .breadcrumb a { color: var(--text-3); transition: color 0.15s; }
+    .breadcrumb a:hover { color: var(--text-2); }
+
+    .page-header h1 {
+      font-size: 34px;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      font-size: 15px;
+      color: var(--text-2);
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* ── Intent Cards ──────────────────────────────────────── */
+    .intent-section {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+    }
+
+    .intent-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .intent-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      position: relative;
+    }
+
+    .intent-card {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      cursor: pointer;
+      background: var(--white);
+      transition: border-color 0.18s, background 0.18s, box-shadow 0.18s, transform 0.18s;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      user-select: none;
+    }
+    .intent-card:hover {
+      border-color: var(--blue);
+      background: #f4f8ff;
+      box-shadow: 0 2px 12px rgba(47,107,255,0.1);
+      transform: translateY(-1px);
+    }
+    .intent-card.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      box-shadow: 0 2px 16px rgba(47,107,255,0.14);
+    }
+
+    .intent-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(47,107,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.18s;
+    }
+    .intent-card.active .intent-icon {
+      background: rgba(47,107,255,0.18);
+    }
+
+    .intent-body {}
+
+    .intent-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .intent-desc {
+      font-size: 12.5px;
+      color: var(--text-2);
+      line-height: 1.55;
+    }
+
+    .intent-clear-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .intent-clear {
+      font-size: 12.5px;
+      color: var(--text-3);
+      cursor: pointer;
+      transition: color 0.15s;
+      padding: 3px 6px;
+      border-radius: 5px;
+    }
+    .intent-clear:hover { color: var(--text-2); background: rgba(0,0,0,0.04); }
+    .intent-clear.hidden { visibility: hidden; pointer-events: none; }
+
+    /* ── Filter Bar ────────────────────────────────────────── */
+    .filter-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+
+    .filter-bar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      white-space: nowrap;
+    }
+
+    .filter-select {
+      height: 34px;
+      padding: 0 28px 0 10px;
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      background: var(--white);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239CA3AF' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 9px center;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .filter-select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(47,107,255,0.1);
+    }
+
+    /* Slider filter group */
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slider-value {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--navy);
+      min-width: 54px;
+      white-space: nowrap;
+    }
+
+    input[type="range"].filter-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 110px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border-2);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].filter-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--blue);
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(47,107,255,0.35);
+      transition: box-shadow 0.15s;
+    }
+    input[type="range"].filter-slider::-webkit-slider-thumb:hover {
+      box-shadow: 0 1px 8px rgba(47,107,255,0.5);
+    }
+
+    /* Fund type pills */
+    .pill-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .type-pill {
+      padding: 5px 12px;
+      border: 1px solid var(--border-2);
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      background: var(--white);
+      font-family: 'Inter', sans-serif;
+    }
+    .type-pill:hover { border-color: var(--blue); color: var(--navy); }
+    .type-pill.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .filter-reset {
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--text-3);
+      cursor: pointer;
+      padding: 5px 8px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .filter-reset:hover { color: var(--text-2); background: rgba(0,0,0,0.04); }
+
+    .filter-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ── Main App ─────────────────────────────────────────── */
+    .screener-app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 40px 60px;
+    }
+
+    /* ── Dashboard Card ────────────────────────────────────── */
+    .compare-dashboard {
+      background: var(--navy);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 2px 8px rgba(11,18,32,0.12),
+        0 12px 40px rgba(11,18,32,0.22),
+        0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    /* ── Dashboard Top Bar ─────────────────────────────────── */
+    .dashboard-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .match-count {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .match-count strong {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-right: 3px;
+    }
+
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sort-label {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.3);
+      white-space: nowrap;
+    }
+
+    .sort-select {
+      height: 30px;
+      padding: 0 26px 0 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.06);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%237EB3FF' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .sort-select:focus { border-color: rgba(47,107,255,0.5); }
+
+    /* ── Best Match Banner ─────────────────────────────────── */
+    .best-match-banner {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      background: var(--navy-2);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-wrap: wrap;
+    }
+    .best-match-banner.visible { display: flex; }
+
+    .banner-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: rgba(47,107,255,0.18);
+      flex-shrink: 0;
+    }
+
+    .banner-text {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.55);
+      flex: 1;
+    }
+    .banner-text strong {
+      color: rgba(255,255,255,0.85);
+    }
+
+    .banner-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .banner-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      background: rgba(47,107,255,0.2);
+      border: 1px solid rgba(47,107,255,0.35);
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--blue-light);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Table ─────────────────────────────────────────────── */
+    .fund-table-wrap {
+      overflow-x: auto;
+    }
+
+    table.fund-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .fund-table thead tr {
+      background: rgba(255,255,255,0.025);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .fund-table thead th {
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+    .fund-table thead th:hover { color: rgba(255,255,255,0.6); }
+    .fund-table thead th.sorted { color: rgba(255,255,255,0.75); }
+    .fund-table thead th.th-match { color: rgba(255,255,255,0.35); }
+
+    .th-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sort-arrow {
+      opacity: 0.4;
+      font-size: 9px;
+      line-height: 1;
+    }
+    th.sorted .sort-arrow { opacity: 1; color: var(--blue-light); }
+
+    .fund-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .fund-table tbody tr:hover { background: rgba(47,107,255,0.07); }
+    .fund-table tbody tr.row-selected { background: rgba(47,107,255,0.12); }
+    .fund-table tbody tr:last-child { border-bottom: none; }
+
+    .fund-table td {
+      padding: 13px 16px;
+      vertical-align: middle;
+    }
+
+    .td-symbol {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .td-name {
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    .td-type-badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .td-type-badge.etf {
+      background: rgba(47,107,255,0.12);
+      color: var(--blue-light);
+    }
+    .td-type-badge.mf {
+      background: rgba(167,139,250,0.12);
+      color: var(--violet);
+    }
+
+    .td-num {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .td-num.col-return { text-align: right; }
+
+    /* Match score pill */
+    .match-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .match-pill.high {
+      background: rgba(52,211,153,0.15);
+      color: var(--green);
+      border: 1px solid rgba(52,211,153,0.25);
+    }
+    .match-pill.mid {
+      background: rgba(47,107,255,0.15);
+      color: var(--blue-light);
+      border: 1px solid rgba(47,107,255,0.25);
+    }
+    .match-pill.low {
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.35);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .compare-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      background: rgba(47,107,255,0.15);
+      color: var(--blue-light);
+      border: 1px solid rgba(47,107,255,0.3);
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .compare-btn:hover {
+      background: rgba(47,107,255,0.28);
+      border-color: rgba(47,107,255,0.55);
+      color: #fff;
+    }
+    .compare-btn:active { transform: translateY(1px); }
+    .compare-btn.is-selected {
+      background: rgba(47,107,255,0.2);
+      border-color: rgba(47,107,255,0.5);
+      color: #7EB3FF;
+    }
+
+    /* Row selected state */
+    .fund-table tbody tr.row-selected { background: rgba(47,107,255,0.1); }
+    .fund-table tbody tr.row-selected td:first-child { border-left: 2px solid var(--blue); }
+
+    /* ── Skeleton loading ─────────────────────────────────── */
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skel {
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0.05) 25%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0.05) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .skel-row td { padding: 14px 16px; }
+
+    /* ── Empty state ──────────────────────────────────────── */
+    .empty-state {
+      padding: 60px 24px;
+      text-align: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 14px;
+    }
+
+    /* ── Disclaimer ───────────────────────────────────────── */
+    .disclaimer {
+      margin-top: 16px;
+      padding: 13px 18px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .disclaimer svg { flex-shrink: 0; margin-top: 1px; }
+
+    .disclaimer p {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.65;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    .site-footer {
+      background: var(--navy);
+      padding: 40px 0 32px;
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo img { height: 28px; width: auto; display: block; }
+
+    .footer-copy {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 8px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── Multi-select bar ─────────────────────────────────── */
+    .select-bar {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(11,18,32,0.45), 0 2px 8px rgba(11,18,32,0.3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px 10px 16px;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .select-bar.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(-50%) translateY(0);
+    }
+    .select-bar-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+    }
+    .select-chips {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+    .select-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .select-chip-remove {
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      line-height: 1;
+      font-size: 14px;
+      transition: color 0.1s;
+    }
+    .select-chip-remove:hover { color: #fff; }
+    .select-bar-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.1);
+    }
+    .select-bar-compare {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .select-bar-compare:hover { opacity: 0.88; }
+    .select-bar-clear {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 5px;
+      transition: color 0.1s, background 0.1s;
+    }
+    .select-bar-clear:hover { color: #fff; background: rgba(255,255,255,0.06); }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .page-header-inner,
+      .screener-app,
+      .intent-inner,
+      .filter-bar-inner { padding-left: 20px; padding-right: 20px; }
+
+      .intent-row { grid-template-columns: 1fr; }
+      .filter-bar-inner { flex-direction: column; align-items: flex-start; }
+      .filter-reset { margin-left: 0; }
+
+      .nav-links { display: none; }
+
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 600px) {
+      .intent-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ────────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="fundfndr-logo.svg" alt="FundFndr" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="http://localhost:3000/compare.html">Compare</a></li>
+        <li><a href="http://localhost:3000/etfs.html">ETFs</a></li>
+        <li><a href="http://localhost:3000/mutual-funds.html">Mutual Funds</a></li>
+        <li><a href="http://localhost:3000/screener.html" class="active">Screener</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#" class="nav-login">Login</a>
+        <a href="#" class="btn-primary">Get started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Page Header ────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span style="opacity:0.5;">›</span>
+        <span>Screener</span>
+      </div>
+      <h1>Fund Screener</h1>
+      <p>Answer a few questions to find funds that match your goals</p>
+    </div>
+  </div>
+
+  <!-- ── Intent Cards ───────────────────────────────────────── -->
+  <div class="intent-section">
+    <div class="intent-inner">
+      <div class="intent-row" id="intent-cards">
+
+        <div class="intent-card" data-intent="growth">
+          <div class="intent-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M3 14L7.5 9L11 12L17 5" stroke="#2F6BFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 5H17V9" stroke="#2F6BFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="intent-body">
+            <div class="intent-title">Growth</div>
+            <div class="intent-desc">Maximize long-term returns — best for investors with a multi-year horizon and higher risk tolerance.</div>
+          </div>
+        </div>
+
+        <div class="intent-card" data-intent="income">
+          <div class="intent-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="7.5" stroke="#2F6BFF" stroke-width="1.7"/>
+              <path d="M10 6.5V10L12.5 12" stroke="#2F6BFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 10.5C7 10.5 8 13 10 13C12 13 13 11.5 13 10.5C13 9.5 12 8 10 8C8 8 7.5 9 7.5 9" stroke="#2F6BFF" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="intent-body">
+            <div class="intent-title">Income</div>
+            <div class="intent-desc">Regular dividends &amp; distributions — ideal for income-focused investors seeking steady cash flow.</div>
+          </div>
+        </div>
+
+        <div class="intent-card" data-intent="stability">
+          <div class="intent-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2.5L17 6V10C17 13.866 13.866 17.5 10 17.5C6.134 17.5 3 13.866 3 10V6L10 2.5Z" stroke="#2F6BFF" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M7.5 10L9.5 12L12.5 8.5" stroke="#2F6BFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="intent-body">
+            <div class="intent-title">Stability</div>
+            <div class="intent-desc">Preserve capital with lower risk — suitable for conservative investors and near-term goals.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="intent-clear-wrap">
+        <span class="intent-clear hidden" id="intent-clear">Clear selection</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Filter Bar ──────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <div class="filter-bar-inner">
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="filter-label">Asset Class</span>
+        <select class="filter-select" id="filter-asset">
+          <option value="All">All</option>
+          <option value="US Equity">US Equity</option>
+          <option value="International">International</option>
+          <option value="Bonds">Bonds</option>
+          <option value="Sector">Sector</option>
+          <option value="Real Estate">Real Estate</option>
+          <option value="Commodities">Commodities</option>
+        </select>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="slider-group">
+        <span class="filter-label">Exp. Ratio</span>
+        <input type="range" class="filter-slider" id="filter-er" min="0" max="2" step="0.01" value="2" />
+        <span class="slider-value" id="filter-er-val">≤ 2.00%</span>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="filter-label">Min AUM</span>
+        <select class="filter-select" id="filter-aum">
+          <option value="0">Any</option>
+          <option value="1e9">$1B+</option>
+          <option value="10e9">$10B+</option>
+          <option value="50e9">$50B+</option>
+          <option value="100e9">$100B+</option>
+        </select>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="filter-label">Min 5Y Return</span>
+        <select class="filter-select" id="filter-5y">
+          <option value="-999">Any</option>
+          <option value="20">+20%+</option>
+          <option value="40">+40%+</option>
+          <option value="60">+60%+</option>
+          <option value="80">+80%+</option>
+        </select>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="filter-label">Type</span>
+        <div class="pill-group" id="filter-type-pills">
+          <button class="type-pill active" data-type="All">All</button>
+          <button class="type-pill" data-type="ETF">ETF</button>
+          <button class="type-pill" data-type="MF">Mutual Fund</button>
+        </div>
+      </div>
+
+      <span class="filter-reset" id="filter-reset">Reset filters</span>
+    </div>
+  </div>
+
+  <!-- ── App ────────────────────────────────────────────────── -->
+  <main class="screener-app">
+
+    <div class="compare-dashboard">
+
+      <!-- Dashboard Top Bar -->
+      <div class="dashboard-top-bar">
+        <div class="match-count" id="match-count"><strong>—</strong> funds match</div>
+        <div class="sort-group">
+          <span class="sort-label">Sort by</span>
+          <select class="sort-select" id="sort-select">
+            <option value="y5">5Y Return</option>
+            <option value="y1">1Y Return</option>
+            <option value="ytd">YTD</option>
+            <option value="er">Exp. Ratio</option>
+            <option value="aum">AUM</option>
+            <option value="match">Match Score</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Best Match Banner -->
+      <div class="best-match-banner" id="best-match-banner">
+        <div class="banner-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1L8.854 5.09L13.327 5.635L10.164 8.717L10.99 13.168L7 10.988L3.01 13.168L3.836 8.717L0.673 5.635L5.146 5.09L7 1Z" fill="#7EB3FF" stroke="#7EB3FF" stroke-width="0.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="banner-text" id="banner-text">Top picks for <strong>—</strong> investors</div>
+        <div class="banner-chips" id="banner-chips"></div>
+      </div>
+
+      <!-- Table -->
+      <div class="fund-table-wrap">
+        <table class="fund-table" id="fund-table">
+          <thead>
+            <tr>
+              <th data-col="symbol" style="width:180px;">
+                <span class="th-inner">Symbol <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="type">
+                <span class="th-inner">Type <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="match" class="th-match" id="th-match" style="text-align:center; display:none;">
+                <span class="th-inner">Match <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="ytd" style="text-align:right;">
+                <span class="th-inner">YTD <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="y1" style="text-align:right;">
+                <span class="th-inner">1Y <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="y5" style="text-align:right;">
+                <span class="th-inner">5Y <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="er" style="text-align:right;">
+                <span class="th-inner">Exp. Ratio <span class="sort-arrow">↕</span></span>
+              </th>
+              <th data-col="aum" style="text-align:right;">
+                <span class="th-inner">AUM <span class="sort-arrow">↕</span></span>
+              </th>
+              <th style="text-align:right; cursor:default;">Compare</th>
+            </tr>
+          </thead>
+          <tbody id="fund-tbody">
+            <!-- Skeleton rows rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="6" stroke="#9CA3AF" stroke-width="1.2"/>
+        <path d="M7 5.5V8.5" stroke="#9CA3AF" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="7" cy="4" r="0.65" fill="#9CA3AF"/>
+      </svg>
+      <p>Data sourced from Yahoo Finance and updated in real time. Past performance is not indicative of future results. Match scores are algorithmic estimates based on fund characteristics and are not investment advice. This tool is for informational purposes only.</p>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="footer-logo">
+          <img src="fundfndr-logo-white.svg" alt="FundFndr" />
+        </a>
+        <div class="footer-copy">© 2026 FundFndr. For informational purposes only.</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="http://localhost:3000/compare.html">Compare</a></li>
+        <li><a href="http://localhost:3000/etfs.html">ETFs</a></li>
+        <li><a href="http://localhost:3000/mutual-funds.html">Mutual Funds</a></li>
+        <li><a href="http://localhost:3000/screener.html">Screener</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Multi-select compare bar -->
+  <div class="select-bar" id="select-bar">
+    <span class="select-bar-label">Compare</span>
+    <div class="select-chips" id="select-chips"></div>
+    <div class="select-bar-divider"></div>
+    <button class="select-bar-compare" id="select-bar-compare">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 6H10M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Compare funds
+    </button>
+    <span class="select-bar-clear" id="select-bar-clear">Clear all</span>
+  </div>
+
+  <script>
+  (function () {
+
+    // ── Fund definitions ──────────────────────────────────────
+    const FUNDS = [
+      { symbol: 'VOO',   name: 'Vanguard S&P 500 ETF',                   category: 'US Equity',     type: 'ETF' },
+      { symbol: 'SPY',   name: 'SPDR S&P 500 ETF Trust',                 category: 'US Equity',     type: 'ETF' },
+      { symbol: 'IVV',   name: 'iShares Core S&P 500 ETF',               category: 'US Equity',     type: 'ETF' },
+      { symbol: 'VTI',   name: 'Vanguard Total Stock Market ETF',         category: 'US Equity',     type: 'ETF' },
+      { symbol: 'QQQ',   name: 'Invesco QQQ Trust',                       category: 'US Equity',     type: 'ETF' },
+      { symbol: 'SCHD',  name: 'Schwab US Dividend Equity ETF',           category: 'US Equity',     type: 'ETF' },
+      { symbol: 'IWM',   name: 'iShares Russell 2000 ETF',                category: 'US Equity',     type: 'ETF' },
+      { symbol: 'VUG',   name: 'Vanguard Growth ETF',                     category: 'US Equity',     type: 'ETF' },
+      { symbol: 'VGT',   name: 'Vanguard Information Technology ETF',     category: 'Sector',        type: 'ETF' },
+      { symbol: 'XLK',   name: 'Technology Select Sector SPDR',           category: 'Sector',        type: 'ETF' },
+      { symbol: 'XLF',   name: 'Financial Select Sector SPDR',            category: 'Sector',        type: 'ETF' },
+      { symbol: 'XLV',   name: 'Health Care Select Sector SPDR',          category: 'Sector',        type: 'ETF' },
+      { symbol: 'ARKK',  name: 'ARK Innovation ETF',                      category: 'Sector',        type: 'ETF' },
+      { symbol: 'AGG',   name: 'iShares Core US Aggregate Bond ETF',      category: 'Bonds',         type: 'ETF' },
+      { symbol: 'BND',   name: 'Vanguard Total Bond Market ETF',          category: 'Bonds',         type: 'ETF' },
+      { symbol: 'TLT',   name: 'iShares 20+ Year Treasury Bond ETF',      category: 'Bonds',         type: 'ETF' },
+      { symbol: 'LQD',   name: 'iShares iBoxx Inv Grade Corporate ETF',   category: 'Bonds',         type: 'ETF' },
+      { symbol: 'EFA',   name: 'iShares MSCI EAFE ETF',                   category: 'International', type: 'ETF' },
+      { symbol: 'EEM',   name: 'iShares MSCI Emerging Markets ETF',       category: 'International', type: 'ETF' },
+      { symbol: 'VEA',   name: 'Vanguard FTSE Developed Markets ETF',     category: 'International', type: 'ETF' },
+      { symbol: 'GLD',   name: 'SPDR Gold Shares',                        category: 'Commodities',   type: 'ETF' },
+      { symbol: 'VNQ',   name: 'Vanguard Real Estate ETF',                category: 'Real Estate',   type: 'ETF' },
+      { symbol: 'FXAIX', name: 'Fidelity 500 Index Fund',                 category: 'US Equity',     type: 'MF'  },
+      { symbol: 'VFIAX', name: 'Vanguard 500 Index Admiral',              category: 'US Equity',     type: 'MF'  },
+      { symbol: 'SWPPX', name: 'Schwab S&P 500 Index Fund',               category: 'US Equity',     type: 'MF'  },
+      { symbol: 'VTSAX', name: 'Vanguard Total Stock Market Index',       category: 'US Equity',     type: 'MF'  },
+      { symbol: 'FSKAX', name: 'Fidelity Total Market Index Fund',        category: 'US Equity',     type: 'MF'  },
+      { symbol: 'FCNTX', name: 'Fidelity Contrafund',                     category: 'US Equity',     type: 'MF'  },
+      { symbol: 'PRGFX', name: 'T. Rowe Price Growth Stock Fund',         category: 'US Equity',     type: 'MF'  },
+      { symbol: 'DODGX', name: 'Dodge & Cox Stock Fund',                  category: 'US Equity',     type: 'MF'  },
+      { symbol: 'VBTLX', name: 'Vanguard Total Bond Market Index',        category: 'Bonds',         type: 'MF'  },
+      { symbol: 'PTTRX', name: 'PIMCO Total Return Fund',                 category: 'Bonds',         type: 'MF'  },
+      { symbol: 'VWELX', name: 'Vanguard Wellington Fund',                category: 'US Equity',     type: 'MF'  },
+      { symbol: 'VWINX', name: 'Vanguard Wellesley Income Fund',          category: 'Bonds',         type: 'MF'  },
+      { symbol: 'AGTHX', name: 'American Funds Growth Fund of America',   category: 'US Equity',     type: 'MF'  },
+      { symbol: 'VGTSX', name: 'Vanguard Total Intl Stock Index',         category: 'International', type: 'MF'  },
+    ];
+
+    // ── State ─────────────────────────────────────────────────
+    const state = {
+      intent: null,   // 'growth' | 'income' | 'stability' | null
+      sort: { col: 'y5', dir: 'desc' },
+      filters: {
+        asset: 'All',
+        er: 2.0,
+        aum: 0,
+        y5: -999,
+        type: 'All',
+      },
+    };
+
+    const selected = new Set();
+
+    // Live data
+    const quotes = {};
+    const charts = {};
+
+    // ── Helpers ───────────────────────────────────────────────
+
+    function calcReturn(closes, months) {
+      const sliced = closes.slice(-months).filter(v => v != null);
+      if (sliced.length < 2) return null;
+      return (sliced[sliced.length - 1] / sliced[0] - 1) * 100;
+    }
+
+    function getMonths(period) {
+      return { YTD: Math.max(2, new Date().getMonth() + 1), '1Y': 12, '5Y': 60 }[period] || 12;
+    }
+
+    function fmtPct(v) {
+      if (v == null) return '—';
+      return (v >= 0 ? '+' : '') + v.toFixed(1) + '%';
+    }
+
+    function fmtPctColored(v) {
+      if (v == null) return '<span style="color:rgba(255,255,255,0.3);">—</span>';
+      const color = v >= 0 ? '#34D399' : '#F87171';
+      return `<span style="color:${color};">${fmtPct(v)}</span>`;
+    }
+
+    function fmtER(v) {
+      if (v == null) return '<span style="color:rgba(255,255,255,0.3);">—</span>';
+      const pct = (v * 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '') + '%';
+      return `<span style="color:rgba(255,255,255,0.75);">${pct}</span>`;
+    }
+
+    function fmtERDisplay(v) {
+      if (v == null) return '—';
+      return (v * 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '') + '%';
+    }
+
+    function fmtAUM(v) {
+      if (v == null) return '<span style="color:rgba(255,255,255,0.3);">—</span>';
+      let s;
+      if (v >= 1e12) s = '$' + (v / 1e12).toFixed(1) + 'T';
+      else if (v >= 1e9) s = '$' + (v / 1e9).toFixed(0) + 'B';
+      else if (v >= 1e6) s = '$' + (v / 1e6).toFixed(0) + 'M';
+      else s = '$' + v;
+      return `<span style="color:rgba(255,255,255,0.75);">${s}</span>`;
+    }
+
+    // ── Match Score ───────────────────────────────────────────
+
+    function calcMatchScore(fund, intent) {
+      let score = 50;
+
+      if (intent === 'growth') {
+        if (fund.y5 > 80) score += 25;
+        else if (fund.y5 > 60) score += 18;
+        else if (fund.y5 > 40) score += 10;
+        if (fund.er != null) {
+          if (fund.er < 0.05) score += 15;
+          else if (fund.er < 0.20) score += 8;
+        }
+        if (['US Equity', 'Sector'].includes(fund.category)) score += 10;
+      } else if (intent === 'income') {
+        if (fund.category === 'Bonds') score += 20;
+        if (fund.er != null) {
+          if (fund.er < 0.15) score += 15;
+          else if (fund.er < 0.40) score += 8;
+        }
+        if (fund.aum != null && fund.aum > 10e9) score += 10;
+        if (fund.y1 != null && fund.y1 > 0 && fund.y1 < 15) score += 5;
+      } else if (intent === 'stability') {
+        if (fund.category === 'Bonds') score += 25;
+        if (fund.er != null) {
+          if (fund.er < 0.10) score += 15;
+          else if (fund.er < 0.25) score += 8;
+        }
+        if (fund.aum != null && fund.aum > 50e9) score += 10;
+        const absY1 = Math.abs(fund.y1 || 0);
+        if (absY1 < 5) score += 10;
+        else if (absY1 < 10) score += 5;
+      }
+
+      return Math.min(100, Math.max(0, score));
+    }
+
+    // ── Data accessors ────────────────────────────────────────
+
+    function getRow(fund) {
+      const c = charts[fund.symbol] || { closes: [] };
+      const q = quotes[fund.symbol] || {};
+      const row = {
+        symbol:   fund.symbol,
+        name:     fund.name,
+        category: fund.category,
+        type:     fund.type,
+        ytd:      calcReturn(c.closes, getMonths('YTD')),
+        y1:       calcReturn(c.closes, 12),
+        y5:       calcReturn(c.closes, 60),
+        er:       q.expRatio ?? null,
+        aum:      q.aum ?? null,
+      };
+      row.match = state.intent ? calcMatchScore(row, state.intent) : null;
+      return row;
+    }
+
+    // ── Intent presets ────────────────────────────────────────
+
+    const INTENT_PRESETS = {
+      growth: {
+        asset: 'All',
+        er: 1.0,
+        aum: 0,
+        y5: -999,
+        type: 'All',
+        sort: { col: 'y5', dir: 'desc' },
+      },
+      income: {
+        asset: 'All',
+        er: 0.5,
+        aum: 0,
+        y5: -999,
+        type: 'All',
+        sort: { col: 'y1', dir: 'desc' },
+      },
+      stability: {
+        asset: 'Bonds',
+        er: 0.3,
+        aum: 0,
+        y5: -999,
+        type: 'All',
+        sort: { col: 'y1', dir: 'asc' },
+      },
+    };
+
+    function applyIntentPreset(intent) {
+      const preset = INTENT_PRESETS[intent];
+      state.filters.asset = preset.asset;
+      state.filters.er = preset.er;
+      state.filters.aum = preset.aum;
+      state.filters.y5 = preset.y5;
+      state.filters.type = preset.type;
+      state.sort.col = preset.sort.col;
+      state.sort.dir = preset.sort.dir;
+      syncFiltersUI();
+    }
+
+    function syncFiltersUI() {
+      document.getElementById('filter-asset').value = state.filters.asset;
+      const erSlider = document.getElementById('filter-er');
+      erSlider.value = state.filters.er;
+      document.getElementById('filter-er-val').textContent = '≤ ' + state.filters.er.toFixed(2) + '%';
+      document.getElementById('filter-aum').value = String(state.filters.aum);
+      document.getElementById('filter-5y').value = String(state.filters.y5);
+      document.querySelectorAll('.type-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.type === state.filters.type);
+      });
+      document.getElementById('sort-select').value = state.sort.col;
+    }
+
+    function resetFilters() {
+      state.filters = { asset: 'All', er: 2.0, aum: 0, y5: -999, type: 'All' };
+      state.sort = { col: 'y5', dir: 'desc' };
+      syncFiltersUI();
+    }
+
+    // ── Filter + Sort ─────────────────────────────────────────
+
+    function getVisible() {
+      return FUNDS
+        .filter(f => {
+          if (state.filters.asset !== 'All' && f.category !== state.filters.asset) return false;
+          if (state.filters.type !== 'All' && f.type !== state.filters.type) return false;
+          return true;
+        })
+        .map(getRow)
+        .filter(r => {
+          if (r.er != null && r.er * 100 > state.filters.er + 0.001) return false;
+          if (r.aum != null && r.aum < state.filters.aum) return false;
+          if (r.y5 != null && r.y5 < state.filters.y5) return false;
+          return true;
+        })
+        .sort((a, b) => {
+          const { col, dir } = state.sort;
+          const va = a[col];
+          const vb = b[col];
+          if (va == null && vb == null) return 0;
+          if (va == null) return 1;
+          if (vb == null) return -1;
+          if (typeof va === 'string') {
+            return dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+          }
+          return dir === 'asc' ? va - vb : vb - va;
+        });
+    }
+
+    // ── Render ────────────────────────────────────────────────
+
+    function renderMatchColumn(show) {
+      const th = document.getElementById('th-match');
+      if (th) th.style.display = show ? '' : 'none';
+    }
+
+    function renderBanner(rows) {
+      const banner = document.getElementById('best-match-banner');
+      const bannerText = document.getElementById('banner-text');
+      const bannerChips = document.getElementById('banner-chips');
+
+      if (!state.intent) {
+        banner.classList.remove('visible');
+        return;
+      }
+
+      banner.classList.add('visible');
+      const label = state.intent.charAt(0).toUpperCase() + state.intent.slice(1);
+      bannerText.innerHTML = `Top picks for <strong>${label}</strong> investors`;
+
+      // Top 3 by match score among visible rows
+      const top3 = [...rows]
+        .filter(r => r.match != null)
+        .sort((a, b) => b.match - a.match)
+        .slice(0, 3);
+
+      bannerChips.innerHTML = top3.map(r =>
+        `<div class="banner-chip">
+          <svg width="9" height="9" viewBox="0 0 14 14" fill="none" style="opacity:0.7;">
+            <path d="M7 1L8.854 5.09L13.327 5.635L10.164 8.717L10.99 13.168L7 10.988L3.01 13.168L3.836 8.717L0.673 5.635L5.146 5.09L7 1Z" fill="#7EB3FF"/>
+          </svg>
+          ${r.symbol}
+        </div>`
+      ).join('');
+    }
+
+    function renderTable() {
+      const rows = getVisible();
+      const tbody = document.getElementById('fund-tbody');
+      const showMatch = !!state.intent;
+
+      renderMatchColumn(showMatch);
+      renderBanner(rows);
+
+      // Update count
+      const countEl = document.getElementById('match-count');
+      countEl.innerHTML = `<strong>${rows.length}</strong> fund${rows.length !== 1 ? 's' : ''} match`;
+
+      // Update sort select
+      document.getElementById('sort-select').value = state.sort.col;
+      updateSortHeaders();
+
+      if (rows.length === 0) {
+        const colSpan = showMatch ? 9 : 8;
+        tbody.innerHTML = `<tr><td colspan="${colSpan}" class="empty-state">No funds match your current filters.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => {
+        let matchCell = '';
+        if (showMatch) {
+          const cls = r.match >= 80 ? 'high' : r.match >= 60 ? 'mid' : 'low';
+          matchCell = `<td style="text-align:center;"><span class="match-pill ${cls}">${r.match}</span></td>`;
+        }
+
+        const typeCls = r.type === 'ETF' ? 'etf' : 'mf';
+        const typeLabel = r.type === 'MF' ? 'MF' : 'ETF';
+
+        return `
+          <tr data-symbol="${r.symbol}" class="${selected.has(r.symbol) ? 'row-selected' : ''}">
+            <td>
+              <div class="td-symbol">${r.symbol}</div>
+              <div class="td-name">${r.name}</div>
+            </td>
+            <td><span class="td-type-badge ${typeCls}">${typeLabel}</span></td>
+            ${matchCell}
+            <td class="td-num col-return">${fmtPctColored(r.ytd)}</td>
+            <td class="td-num col-return">${fmtPctColored(r.y1)}</td>
+            <td class="td-num col-return">${fmtPctColored(r.y5)}</td>
+            <td class="td-num">${fmtER(r.er)}</td>
+            <td class="td-num">${fmtAUM(r.aum)}</td>
+            <td style="text-align:right;">
+              <button class="compare-btn ${selected.has(r.symbol) ? 'is-selected' : ''}" data-symbol="${r.symbol}">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5H9M6.5 3L9 5.5L6.5 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Compare
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Wire up compare buttons
+      tbody.querySelectorAll('.compare-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          toggleSelect(btn.dataset.symbol);
+        });
+      });
+
+      // Row click
+      tbody.querySelectorAll('tr[data-symbol]').forEach(tr => {
+        tr.addEventListener('click', () => toggleSelect(tr.dataset.symbol));
+      });
+    }
+
+    function updateSortHeaders() {
+      document.querySelectorAll('#fund-table thead th[data-col]').forEach(th => {
+        const col = th.dataset.col;
+        const arrow = th.querySelector('.sort-arrow');
+        th.classList.toggle('sorted', col === state.sort.col);
+        if (arrow) {
+          if (col === state.sort.col) {
+            arrow.textContent = state.sort.dir === 'asc' ? '↑' : '↓';
+          } else {
+            arrow.textContent = '↕';
+          }
+        }
+      });
+    }
+
+    // ── Multi-select ──────────────────────────────────────────
+
+    function toggleSelect(sym) {
+      if (selected.has(sym)) {
+        selected.delete(sym);
+      } else {
+        if (selected.size >= 5) return;
+        selected.add(sym);
+      }
+      const tbody = document.getElementById('fund-tbody');
+      tbody.querySelectorAll('tr[data-symbol]').forEach(tr => {
+        const s = tr.dataset.symbol;
+        tr.classList.toggle('row-selected', selected.has(s));
+        const btn = tr.querySelector('.compare-btn');
+        if (btn) btn.classList.toggle('is-selected', selected.has(s));
+      });
+      renderSelectBar();
+    }
+
+    function renderSelectBar() {
+      const bar = document.getElementById('select-bar');
+      const chipsEl = document.getElementById('select-chips');
+      const compareBtn = document.getElementById('select-bar-compare');
+
+      bar.classList.toggle('visible', selected.size > 0);
+
+      chipsEl.innerHTML = [...selected].map(sym => `
+        <div class="select-chip">
+          ${sym}
+          <span class="select-chip-remove" data-sym="${sym}">&times;</span>
+        </div>
+      `).join('');
+
+      chipsEl.querySelectorAll('.select-chip-remove').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          toggleSelect(btn.dataset.sym);
+        });
+      });
+
+      compareBtn.onclick = () => {
+        if (!selected.size) return;
+        window.open('http://localhost:3000/compare.html?symbols=' + [...selected].join(','), '_blank');
+      };
+    }
+
+    document.getElementById('select-bar-clear').addEventListener('click', () => {
+      selected.clear();
+      document.getElementById('fund-tbody').querySelectorAll('tr[data-symbol]').forEach(tr => {
+        tr.classList.remove('row-selected');
+        const btn = tr.querySelector('.compare-btn');
+        if (btn) btn.classList.remove('is-selected');
+      });
+      renderSelectBar();
+    });
+
+    // ── Skeleton rows ─────────────────────────────────────────
+
+    function renderSkeleton() {
+      const tbody = document.getElementById('fund-tbody');
+      tbody.innerHTML = Array(12).fill(0).map(() => `
+        <tr class="skel-row">
+          <td><div class="skel" style="width:52px;height:14px;margin-bottom:5px;"></div><div class="skel" style="width:150px;height:10px;"></div></td>
+          <td><div class="skel" style="width:34px;height:20px;border-radius:4px;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:52px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:40px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:55px;height:13px;display:inline-block;"></div></td>
+          <td style="text-align:right;"><div class="skel" style="width:72px;height:28px;display:inline-block;border-radius:7px;"></div></td>
+        </tr>
+      `).join('');
+    }
+
+    // ── Data fetching ─────────────────────────────────────────
+
+    function processQuote(q) {
+      if (!q?.data) return {};
+      const { summaryDetail, fundProfile } = q.data;
+      const erRaw = fundProfile?.feesExpensesInvestment?.annualReportExpenseRatio
+                 ?? fundProfile?.feesExpensesInvestment?.netExpenseRatio;
+      return {
+        expRatio: typeof erRaw === 'number' ? erRaw : null,
+        aum:      summaryDetail?.totalAssets ?? null,
+      };
+    }
+
+    function processChart(json) {
+      const result = json?.chart?.result?.[0];
+      if (!result) return { closes: [] };
+      const closes = result.indicators?.adjclose?.[0]?.adjclose
+                  || result.indicators?.quote?.[0]?.close
+                  || [];
+      return { closes: closes.map(v => (v == null ? null : v)) };
+    }
+
+    async function loadBatch(syms) {
+      try {
+        const [quotesRes, ...chartResArr] = await Promise.all([
+          fetch(`/api/quote?symbols=${syms.join(',')}`).then(r => r.json()),
+          ...syms.map(sym => fetch(`/api/chart?symbol=${sym}&range=10y`).then(r => r.json())),
+        ]);
+        quotesRes.forEach(q => { quotes[q.symbol] = processQuote(q); });
+        syms.forEach((sym, i) => { charts[sym] = processChart(chartResArr[i]); });
+        renderTable();
+      } catch (err) {
+        console.error('Batch load error:', err);
+        renderTable();
+      }
+    }
+
+    async function loadAllData() {
+      renderSkeleton();
+      const allSymbols = FUNDS.map(f => f.symbol);
+      const BATCH = 6;
+      for (let i = 0; i < allSymbols.length; i += BATCH) {
+        await loadBatch(allSymbols.slice(i, i + BATCH));
+      }
+    }
+
+    // ── Intent Cards ──────────────────────────────────────────
+
+    document.getElementById('intent-cards').addEventListener('click', e => {
+      const card = e.target.closest('.intent-card');
+      if (!card) return;
+      const intent = card.dataset.intent;
+
+      if (state.intent === intent) {
+        // Deselect
+        state.intent = null;
+        card.classList.remove('active');
+        document.getElementById('intent-clear').classList.add('hidden');
+        resetFilters();
+      } else {
+        state.intent = intent;
+        document.querySelectorAll('.intent-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        document.getElementById('intent-clear').classList.remove('hidden');
+        applyIntentPreset(intent);
+        // Show match sort option
+        document.getElementById('sort-select').querySelector('option[value="match"]').disabled = false;
+      }
+
+      renderTable();
+    });
+
+    document.getElementById('intent-clear').addEventListener('click', () => {
+      state.intent = null;
+      document.querySelectorAll('.intent-card').forEach(c => c.classList.remove('active'));
+      document.getElementById('intent-clear').classList.add('hidden');
+      resetFilters();
+      renderTable();
+    });
+
+    // ── Filter controls ───────────────────────────────────────
+
+    document.getElementById('filter-asset').addEventListener('change', e => {
+      state.filters.asset = e.target.value;
+      renderTable();
+    });
+
+    document.getElementById('filter-er').addEventListener('input', e => {
+      state.filters.er = parseFloat(e.target.value);
+      document.getElementById('filter-er-val').textContent = '≤ ' + state.filters.er.toFixed(2) + '%';
+      renderTable();
+    });
+
+    document.getElementById('filter-aum').addEventListener('change', e => {
+      state.filters.aum = parseFloat(e.target.value);
+      renderTable();
+    });
+
+    document.getElementById('filter-5y').addEventListener('change', e => {
+      state.filters.y5 = parseFloat(e.target.value);
+      renderTable();
+    });
+
+    document.getElementById('filter-type-pills').addEventListener('click', e => {
+      const pill = e.target.closest('.type-pill');
+      if (!pill) return;
+      state.filters.type = pill.dataset.type;
+      document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      renderTable();
+    });
+
+    document.getElementById('filter-reset').addEventListener('click', () => {
+      state.intent = null;
+      document.querySelectorAll('.intent-card').forEach(c => c.classList.remove('active'));
+      document.getElementById('intent-clear').classList.add('hidden');
+      resetFilters();
+      renderTable();
+    });
+
+    // ── Sort controls ─────────────────────────────────────────
+
+    document.getElementById('sort-select').addEventListener('change', e => {
+      state.sort.col = e.target.value;
+      state.sort.dir = (e.target.value === 'er') ? 'asc' : 'desc';
+      renderTable();
+    });
+
+    // Column header clicks
+    document.getElementById('fund-table').addEventListener('click', e => {
+      const th = e.target.closest('th[data-col]');
+      if (!th) return;
+      const col = th.dataset.col;
+      if (state.sort.col === col) {
+        state.sort.dir = state.sort.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        state.sort.col = col;
+        state.sort.dir = col === 'er' ? 'asc' : 'desc';
+      }
+      document.getElementById('sort-select').value = state.sort.col;
+      renderTable();
+    });
+
+    // ── Boot ──────────────────────────────────────────────────
+    renderTable();
+    loadAllData();
+
+  })();
+  </script>
+
+</body>
+</html>
