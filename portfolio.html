@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Scan — FundFndr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:       #0F172A;
+      --navy-2:     #16253D;
+      --text:       #0F172A;
+      --text-2:     #6B7280;
+      --text-3:     #9CA3AF;
+      --border:     #E5E7EB;
+      --surface:    #F9FAFB;
+      --blue:       #009EDB;
+      --blue-light: #5BC4EE;
+      --blue-soft:  #CCF0FF;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--navy);
+      color: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,23,42,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav.nav-scrolled {
+      border-bottom-color: rgba(255,255,255,0.1);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 56px; display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+    }
+    .nav-logo img { height: 34px; width: auto; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 4px;
+      list-style: none; flex: 1; justify-content: center;
+    }
+    .nav-links a {
+      font-size: 13.5px; font-weight: 400; color: rgba(255,255,255,0.62);
+      padding: 6px 12px; border-radius: 6px; text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: rgba(255,255,255,0.95); background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: #fff; font-weight: 500; background: rgba(255,255,255,0.08); }
+    .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .nav-login {
+      font-size: 13.5px; color: rgba(255,255,255,0.6);
+      padding: 6px 12px; border-radius: 6px;
+      text-decoration: none; transition: color 0.15s;
+    }
+    .nav-login:hover { color: #fff; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--blue); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
+      padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      box-shadow: 0 1px 3px rgba(0,158,219,0.3);
+    }
+    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(0,158,219,0.35); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 64px 24px 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-header-inner { max-width: 680px; margin: 0 auto; text-align: center; }
+    .page-breadcrumb {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+      letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .page-breadcrumb a { color: var(--blue-light); text-decoration: none; }
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.02em; color: #fff; margin-bottom: 16px;
+    }
+    .page-subtitle {
+      font-size: 16px; color: rgba(255,255,255,0.58);
+      line-height: 1.75; max-width: 520px; margin: 0 auto;
+    }
+
+    /* ── UPLOAD SECTION ── */
+    .upload-section { padding: 48px 24px 72px; }
+    .upload-inner { max-width: 620px; margin: 0 auto; }
+
+    .dropzone {
+      border: 2px dashed rgba(255,255,255,0.14);
+      border-radius: 16px; padding: 52px 32px;
+      text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: rgba(255,255,255,0.025);
+    }
+    .dropzone:hover, .dropzone.drag-over {
+      border-color: var(--blue);
+      background: rgba(0,158,219,0.06);
+    }
+    .dropzone-icon {
+      width: 52px; height: 52px; margin: 0 auto 18px;
+      background: rgba(0,158,219,0.12); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dropzone-icon svg { width: 26px; height: 26px; color: var(--blue-light); }
+    .dropzone-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 7px; }
+    .dropzone-sub { font-size: 13.5px; color: rgba(255,255,255,0.42); line-height: 1.65; }
+    .dropzone-sub strong { color: var(--blue-light); font-weight: 500; }
+    #fileInput { display: none; }
+
+    .or-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 28px 0; color: rgba(255,255,255,0.28); font-size: 13px;
+    }
+    .or-divider::before, .or-divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.09);
+    }
+
+    .ticker-paste {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .ticker-paste label {
+      display: block; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.4); text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 8px;
+    }
+    .ticker-input {
+      width: 100%; background: transparent; border: none; outline: none;
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 14px; line-height: 1.6; resize: none; min-height: 44px;
+    }
+    .ticker-input::placeholder { color: rgba(255,255,255,0.22); }
+    .ticker-paste-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .sample-link {
+      font-size: 12.5px; color: var(--blue-light); text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .sample-link:hover { opacity: 0.72; }
+    .btn-scan {
+      background: var(--blue); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
+      padding: 8px 22px; border-radius: 8px; border: none; cursor: pointer;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      box-shadow: 0 1px 3px rgba(0,158,219,0.3);
+    }
+    .btn-scan:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(0,158,219,0.35); }
+
+    .format-hint {
+      margin-top: 20px; font-size: 12.5px;
+      color: rgba(255,255,255,0.28); text-align: center; line-height: 1.75;
+    }
+    .format-hint strong { color: rgba(255,255,255,0.45); }
+
+    /* ── RESULTS ── */
+    .results-section { display: none; background: #fff; padding: 56px 24px 72px; }
+    .results-section.visible { display: block; }
+    .results-inner { max-width: 1100px; margin: 0 auto; }
+
+    .summary-bar {
+      display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 28px; margin-bottom: 48px;
+    }
+    .summary-stat { display: flex; flex-direction: column; gap: 3px; min-width: 80px; }
+    .summary-stat-num { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+    .summary-stat-label { font-size: 11.5px; color: var(--text-2); }
+    .summary-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
+    .btn-rescan {
+      margin-left: auto; font-size: 13px; color: var(--blue);
+      background: var(--blue-soft); border: none; border-radius: 8px;
+      padding: 9px 18px; cursor: pointer; font-family: 'Inter', sans-serif;
+      font-weight: 500; transition: opacity 0.15s; white-space: nowrap;
+    }
+    .btn-rescan:hover { opacity: 0.78; }
+
+    .section-label {
+      font-size: 11px; font-weight: 600; color: var(--text-2);
+      text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px;
+    }
+    .section-sub { font-size: 13.5px; color: var(--text-2); margin-bottom: 24px; line-height: 1.6; }
+
+    .sdg-coverage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px; margin-bottom: 56px;
+    }
+    .sdg-cov-card {
+      border-radius: 10px; overflow: hidden; position: relative;
+      cursor: default; transition: transform 0.15s;
+      opacity: 0.22; filter: grayscale(0.5);
+    }
+    .sdg-cov-card.covered { opacity: 1; filter: none; }
+    .sdg-cov-card.covered:hover { transform: translateY(-3px); }
+    .sdg-cov-card img { width: 100%; display: block; aspect-ratio: 1; object-fit: cover; }
+    .sdg-cov-badge {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.68); color: #fff;
+      font-size: 10px; font-weight: 600;
+      padding: 4px 4px; text-align: center; line-height: 1.3;
+    }
+
+    .holdings-section { margin-bottom: 56px; }
+    .holdings-table-wrap {
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .holdings-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .holdings-table th {
+      background: var(--surface); padding: 11px 16px;
+      text-align: left; font-size: 11px; font-weight: 600;
+      color: var(--text-2); text-transform: uppercase; letter-spacing: 0.07em;
+      border-bottom: 1px solid var(--border);
+    }
+    .holdings-table td {
+      padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle;
+    }
+    .holdings-table tbody tr:last-child td { border-bottom: none; }
+    .holdings-table tbody tr:hover td { background: var(--surface); }
+    .td-symbol { font-weight: 700; color: var(--text); font-size: 13px; font-family: 'Inter', monospace; }
+    .td-name { color: var(--text-2); }
+    .td-sdg-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .sdg-dot {
+      width: 24px; height: 24px; border-radius: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 9.5px; font-weight: 700; color: #fff; line-height: 1; flex-shrink: 0;
+    }
+    .td-status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11.5px; font-weight: 500; padding: 4px 9px;
+      border-radius: 20px; line-height: 1; white-space: nowrap;
+    }
+    .badge-matched { background: #DCFCE7; color: #166534; }
+    .badge-unassessed { background: var(--surface); color: var(--text-2); border: 1px solid var(--border); }
+
+    .gap-section { margin-bottom: 24px; }
+    .gap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+    .gap-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; }
+    .gap-card-header {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .gap-card-icon { width: 42px; height: 42px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .gap-card-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gap-card-label { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .gap-card-num { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+    .gap-card-body { padding: 12px 16px; }
+    .gap-card-body p { font-size: 12px; color: var(--text-2); margin-bottom: 10px; font-weight: 500; }
+    .gap-fund-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12.5px; padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .gap-fund-item:last-child { border-bottom: none; }
+    .gap-fund-ticker { font-weight: 700; color: var(--text); min-width: 48px; }
+    .gap-fund-name { color: var(--text-2); flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .gap-fund-link { color: var(--blue); text-decoration: none; font-weight: 500; font-size: 12px; flex-shrink: 0; }
+    .gap-fund-link:hover { text-decoration: underline; }
+
+    .no-gaps {
+      grid-column: 1/-1; text-align: center; padding: 48px 24px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .no-gaps-emoji { font-size: 36px; margin-bottom: 14px; }
+    .no-gaps h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .no-gaps p { font-size: 13.5px; color: var(--text-2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.7);
+      padding: 56px 24px 32px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 220px repeat(4, 1fr);
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer-logo { display: flex; align-items: center; margin-bottom: 12px; }
+    .footer-logo img { height: 28px; width: auto; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.38); line-height: 1.6; }
+    .footer-col-title {
+      font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.45);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;
+    }
+    .footer-col a {
+      display: block; font-size: 13px; color: rgba(255,255,255,0.52);
+      text-decoration: none; margin-bottom: 9px; transition: color 0.15s;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.07);
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo-sm { display: flex; align-items: center; gap: 10px; }
+    .footer-logo-sm img { height: 20px; width: auto; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.28); }
+    .footer-social { display: flex; gap: 16px; }
+    .footer-social a {
+      font-size: 12px; color: rgba(255,255,255,0.32); text-decoration: none; transition: color 0.15s;
+    }
+    .footer-social a:hover { color: #fff; }
+
+    /* ── PAGE TABS ── */
+    .page-tabs-wrap {
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 24px;
+    }
+    .page-tabs { max-width: 620px; margin: 0 auto; display: flex; }
+    .page-tab {
+      font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,0.45);
+      background: none; border: none; cursor: pointer;
+      padding: 14px 20px; border-bottom: 2px solid transparent;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+    }
+    .page-tab.active { color: #fff; border-bottom-color: var(--blue); }
+    .page-tab:hover:not(.active) { color: rgba(255,255,255,0.72); }
+
+    /* ── BUILDER SECTION ── */
+    .builder-section { padding: 48px 24px 72px; }
+    .builder-inner { max-width: 960px; margin: 0 auto; }
+
+    .builder-add-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px; padding: 22px 24px; margin-bottom: 20px;
+    }
+    .builder-add-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+    .builder-field { display: flex; flex-direction: column; gap: 7px; }
+    .builder-field-label {
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.42);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .builder-input {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px; padding: 10px 14px; color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 14px;
+      outline: none; transition: border-color 0.15s;
+    }
+    .builder-input:focus { border-color: var(--blue); }
+    .builder-input::placeholder { color: rgba(255,255,255,0.25); }
+    .builder-ticker-field { width: 160px; }
+    .builder-alloc-field input { width: 88px; text-align: right; }
+    .btn-add-holding {
+      background: var(--blue); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
+      padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;
+      transition: opacity 0.15s; white-space: nowrap; height: 42px; align-self: flex-end;
+    }
+    .btn-add-holding:hover { opacity: 0.85; }
+    .builder-preview {
+      margin-top: 10px; font-size: 12.5px;
+      color: rgba(255,255,255,0.55); min-height: 16px;
+    }
+    .builder-preview .pmatch { color: var(--blue-light); }
+    .builder-err { margin-top: 8px; font-size: 12.5px; color: #F87171; min-height: 16px; }
+
+    .builder-holdings-wrap {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; overflow: hidden; margin-bottom: 20px;
+    }
+    .builder-holdings-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 12.5px; color: rgba(255,255,255,0.45);
+    }
+    .builder-holdings-header .hcount { font-weight: 700; color: rgba(255,255,255,0.85); }
+    .builder-total-pill {
+      margin-left: auto; font-size: 12.5px; font-weight: 700;
+      padding: 3px 11px; border-radius: 20px;
+      background: rgba(0,158,219,0.15); color: var(--blue-light);
+    }
+    .builder-total-pill.over  { background: rgba(239,68,68,0.15); color: #F87171; }
+    .builder-total-pill.under { background: rgba(245,158,11,0.15); color: #FCD34D; }
+    .btn-normalize {
+      font-size: 12px; color: rgba(255,255,255,0.42);
+      background: none; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px; padding: 4px 10px; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-normalize:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.3); }
+
+    .builder-holding-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;
+    }
+    .builder-holding-row:last-child { border-bottom: none; }
+    .bh-sym { font-weight: 700; font-family: monospace; width: 62px; color: #fff; font-size: 12.5px; flex-shrink: 0; }
+    .bh-name { flex: 1; color: rgba(255,255,255,0.58); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; }
+    .bh-class {
+      font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .bh-alloc-input {
+      width: 62px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; padding: 5px 7px; color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 12.5px; text-align: right; outline: none;
+    }
+    .bh-alloc-input:focus { border-color: var(--blue); }
+    .bh-pct { font-size: 11.5px; color: rgba(255,255,255,0.35); flex-shrink: 0; }
+    .bh-flags { font-size: 11px; color: #F87171; flex-shrink: 0; white-space: nowrap; }
+    .bh-remove {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: none; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.35);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 15px; transition: all 0.15s; flex-shrink: 0;
+    }
+    .bh-remove:hover { color: #F87171; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.08); }
+
+    /* Analysis */
+    .builder-analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .builder-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .bcard-title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.88); margin-bottom: 4px; }
+    .bcard-sub { font-size: 11.5px; color: rgba(255,255,255,0.36); margin-bottom: 18px; line-height: 1.5; }
+
+    .ac-stacked-bar {
+      height: 18px; border-radius: 5px; overflow: hidden;
+      display: flex; gap: 2px; margin-bottom: 16px;
+    }
+    .ac-segment { height: 100%; flex-shrink: 0; border-radius: 2px; transition: width 0.35s; }
+    .ac-legend { display: flex; flex-direction: column; gap: 7px; }
+    .ac-legend-row { display: flex; align-items: center; gap: 8px; }
+    .ac-legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+    .ac-legend-name { font-size: 11.5px; color: rgba(255,255,255,0.58); flex: 1; }
+    .ac-legend-pct { font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.82); }
+
+    .sdg-impact-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+    .sdg-impact-num {
+      width: 22px; height: 22px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .sdg-impact-label { font-size: 11px; color: rgba(255,255,255,0.5); width: 110px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sdg-impact-bar-wrap { flex: 1; height: 7px; background: rgba(255,255,255,0.07); border-radius: 4px; overflow: hidden; }
+    .sdg-impact-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+    .sdg-impact-pct { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6); width: 34px; text-align: right; flex-shrink: 0; }
+
+    .builder-detail-wrap {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; overflow: hidden;
+    }
+    .builder-detail-header {
+      padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.38);
+      text-transform: uppercase; letter-spacing: 0.09em;
+    }
+    .builder-detail-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .builder-detail-table th {
+      background: rgba(255,255,255,0.03); padding: 9px 16px;
+      text-align: left; font-size: 10.5px; font-weight: 600;
+      color: rgba(255,255,255,0.32); text-transform: uppercase;
+      letter-spacing: 0.07em; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .builder-detail-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+    .builder-detail-table tbody tr:last-child td { border-bottom: none; }
+    .builder-detail-table tbody tr:hover td { background: rgba(255,255,255,0.03); }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .footer-top { grid-template-columns: 1fr; }
+      .sdg-coverage-grid { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); }
+      .gap-grid { grid-template-columns: 1fr; }
+      .summary-bar { gap: 14px; }
+      .summary-divider { display: none; }
+      .builder-analysis-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="fundfndr-logo-white.svg" alt="FundFndr" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="etfs.html">Browse Funds</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="screener.html">Impact Finder</a></li>
+        <li><a href="portfolio.html" class="active">Portfolio Scan</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#" class="nav-login">Login</a>
+        <a href="screener.html" class="btn-primary">Find your funds</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="page-header-inner">
+      <div class="page-breadcrumb"><a href="index.html">Home</a> › Portfolio Scanner</div>
+      <h1 class="page-title">Portfolio Impact Scanner</h1>
+      <p class="page-subtitle">Upload your holdings to see which UN Sustainable Development Goals your investments support — and where the gaps are.</p>
+    </div>
+  </section>
+
+  <!-- PAGE TABS -->
+  <div class="page-tabs-wrap">
+    <div class="page-tabs">
+      <button class="page-tab active" id="tabScan">Scan Portfolio</button>
+      <button class="page-tab" id="tabBuild">Build Portfolio</button>
+    </div>
+  </div>
+
+  <!-- UPLOAD SECTION -->
+  <section class="upload-section" id="scanSection">
+    <div class="upload-inner">
+
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".csv,.txt">
+        <div class="dropzone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="dropzone-title">Drop your holdings CSV here</div>
+        <div class="dropzone-sub">or <strong>click to browse</strong> · export from Fidelity, Schwab, Vanguard, or any brokerage</div>
+      </div>
+
+      <div class="or-divider">or enter tickers manually</div>
+
+      <div class="ticker-paste">
+        <label for="tickerInput">Ticker symbols</label>
+        <textarea class="ticker-input" id="tickerInput" rows="2" placeholder="e.g. ICLN, ESGU, VFTAX, PARNX, AAPL, VTI"></textarea>
+        <div class="ticker-paste-actions">
+          <a href="#" class="sample-link" id="loadSample">Load sample portfolio →</a>
+          <button class="btn-scan" id="scanBtn">Scan portfolio</button>
+        </div>
+      </div>
+
+      <p class="format-hint">
+        <strong>Supported formats:</strong> CSV exports from Fidelity, Schwab, Vanguard, TD Ameritrade, and most brokerages.<br>
+        We look for a "Symbol" or "Ticker" column. Your data never leaves your browser.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- BUILDER SECTION -->
+  <section class="builder-section hidden" id="builderSection">
+    <div class="builder-inner">
+
+      <!-- Add holding form -->
+      <div class="builder-add-card">
+        <div class="builder-add-row">
+          <div class="builder-field">
+            <label class="builder-field-label">Ticker</label>
+            <input type="text" id="builderTicker" class="builder-input builder-ticker-field"
+                   placeholder="e.g. VTSAX" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="builder-field builder-alloc-field">
+            <label class="builder-field-label">Allocation %</label>
+            <input type="number" id="builderAlloc" class="builder-input"
+                   placeholder="%" min="0.1" max="100" step="0.1" />
+          </div>
+          <button class="btn-add-holding" id="addHoldingBtn">+ Add</button>
+          <a href="#" class="sample-link" id="loadSampleBuilder" style="align-self:flex-end;padding-bottom:10px;">Load sample →</a>
+        </div>
+        <div id="builderPreview" class="builder-preview"></div>
+        <div id="builderErr" class="builder-err"></div>
+      </div>
+
+      <!-- Holdings list -->
+      <div class="builder-holdings-wrap hidden" id="builderHoldingsWrap">
+        <div class="builder-holdings-header">
+          <span><span class="hcount" id="builderCount">0</span> holdings</span>
+          <span id="builderTotalPill" class="builder-total-pill">0%</span>
+          <button class="btn-normalize" id="normalizeBtn">Normalize to 100%</button>
+        </div>
+        <div id="builderHoldingsList"></div>
+      </div>
+
+      <!-- Analysis -->
+      <div id="builderAnalysis" class="hidden">
+        <div class="builder-analysis-grid">
+
+          <div class="builder-card">
+            <div class="bcard-title">Sub-Asset Class Exposure</div>
+            <div class="bcard-sub">Allocation by asset class across your holdings</div>
+            <div id="acStackedBar" class="ac-stacked-bar"></div>
+            <div id="acLegend" class="ac-legend"></div>
+          </div>
+
+          <div class="builder-card">
+            <div class="bcard-title">SDG Impact Coverage</div>
+            <div class="bcard-sub">% of portfolio allocation aligned to each goal</div>
+            <div id="sdgImpactBars"></div>
+          </div>
+
+        </div>
+
+        <div class="builder-detail-wrap">
+          <div class="builder-detail-header">Portfolio Detail</div>
+          <table class="builder-detail-table">
+            <thead>
+              <tr>
+                <th style="width:80px">Symbol</th>
+                <th>Name</th>
+                <th style="width:160px">Asset Class</th>
+                <th style="width:70px;text-align:right">Alloc</th>
+                <th>SDGs</th>
+                <th style="width:70px">Flags</th>
+              </tr>
+            </thead>
+            <tbody id="builderDetailTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RESULTS SECTION -->
+  <section class="results-section" id="resultsSection">
+    <div class="results-inner">
+
+      <!-- Summary bar -->
+      <div class="summary-bar">
+        <div class="summary-stat">
+          <span class="summary-stat-num" id="statTotal">0</span>
+          <span class="summary-stat-label">Holdings scanned</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-stat">
+          <span class="summary-stat-num" id="statMatched">0</span>
+          <span class="summary-stat-label">Aligned to SDGs</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-stat">
+          <span class="summary-stat-num" id="statGoals">0</span>
+          <span class="summary-stat-label">SDGs covered</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-stat">
+          <span class="summary-stat-num" id="statFlags" style="color:#EF4444;">0</span>
+          <span class="summary-stat-label">Holdings with flags</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-stat">
+          <span class="summary-stat-num" id="statGaps">0</span>
+          <span class="summary-stat-label">SDGs with no coverage</span>
+        </div>
+        <button class="btn-rescan" id="rescanBtn">↑ Scan another</button>
+      </div>
+
+      <!-- SDG Coverage Grid -->
+      <div style="margin-bottom: 56px;">
+        <div class="section-label">Impact Overview</div>
+        <h2 class="section-title">SDG Coverage</h2>
+        <p class="section-sub">Goals shown in color are covered by at least one holding in your portfolio. Grey goals have no current coverage.</p>
+        <div class="sdg-coverage-grid" id="sdgCoverageGrid"></div>
+      </div>
+
+      <!-- Holdings Table -->
+      <div class="holdings-section">
+        <div class="section-label">Breakdown</div>
+        <h2 class="section-title">Holdings Analysis</h2>
+        <p class="section-sub">Each ticker matched against our SDG impact fund database.</p>
+        <div class="holdings-table-wrap">
+          <table class="holdings-table">
+            <thead>
+              <tr>
+                <th style="width:90px">Symbol</th>
+                <th>Fund / Security</th>
+                <th style="width:200px">SDGs</th>
+                <th style="width:130px">Status</th>
+              </tr>
+            </thead>
+            <tbody id="holdingsTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Gap Analysis -->
+      <div class="gap-section">
+        <div class="section-label">Opportunities</div>
+        <h2 class="section-title">Coverage Gaps</h2>
+        <p class="section-sub">SDGs your portfolio doesn't currently address — with suggested funds to fill each gap.</p>
+        <div class="gap-grid" id="gapGrid"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo"><img src="fundfndr-logo-white.svg" alt="FundFndr" /></div>
+          <p class="footer-tagline">Impact Investing · UN SDGs</p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="screener.html">Impact Screener</a>
+          <a href="compare.html">Compare Funds</a>
+          <a href="etfs.html">ETFs</a>
+          <a href="mutual-funds.html">Mutual Funds</a>
+          <a href="portfolio.html">Portfolio Scanner</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Resources</div>
+          <a href="#">About the SDGs</a>
+          <a href="#">Investment Glossary</a>
+          <a href="#">Research Reports</a>
+          <a href="#">API Docs</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Community</div>
+          <a href="#">Join our Community</a>
+          <a href="#">Newsletter</a>
+          <a href="#">Refer a Friend</a>
+          <a href="#">Partner Network</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Trust Center</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-logo-sm">
+          <img src="fundfndr-logo-white.svg" alt="FundFndr" />
+          <span class="footer-copy">© 2025 FundFndr · Impact Investing · For informational purposes only.</span>
+        </div>
+        <div class="footer-social">
+          <a href="#">Twitter</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">YouTube</a>
+          <a href="#">Newsletter</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Fund & SDG Data ───────────────────────────────────────────────────────
+    const SDG_INFO = [
+      null,
+      { name: 'No Poverty',                              color: '#E5243B', short: 'No Poverty' },
+      { name: 'Zero Hunger',                             color: '#DDA63A', short: 'Zero Hunger' },
+      { name: 'Good Health & Well-being',                color: '#4C9F38', short: 'Good Health' },
+      { name: 'Quality Education',                       color: '#C5192D', short: 'Education' },
+      { name: 'Gender Equality',                         color: '#FF3A21', short: 'Gender Equality' },
+      { name: 'Clean Water & Sanitation',                color: '#26BDE2', short: 'Clean Water' },
+      { name: 'Affordable & Clean Energy',               color: '#FCC30B', short: 'Clean Energy' },
+      { name: 'Decent Work & Economic Growth',           color: '#A21942', short: 'Decent Work' },
+      { name: 'Industry, Innovation & Infrastructure',   color: '#FD6925', short: 'Innovation' },
+      { name: 'Reduced Inequalities',                    color: '#DD1367', short: 'Inequalities' },
+      { name: 'Sustainable Cities & Communities',        color: '#FD9D24', short: 'Sust. Cities' },
+      { name: 'Responsible Consumption & Production',    color: '#BF8B2E', short: 'Consumption' },
+      { name: 'Climate Action',                          color: '#3F7E44', short: 'Climate Action' },
+      { name: 'Life Below Water',                        color: '#0A97D9', short: 'Life Below Water' },
+      { name: 'Life on Land',                            color: '#56C02B', short: 'Life on Land' },
+      { name: 'Peace, Justice & Strong Institutions',    color: '#00689D', short: 'Peace & Justice' },
+      { name: 'Partnerships for the Goals',              color: '#19486A', short: 'Partnerships' },
+    ];
+
+    const FUNDS = [
+      { symbol: 'ICLN',  name: 'iShares Global Clean Energy ETF',              type: 'ETF', sdgs: [7, 13, 14, 15] },
+      { symbol: 'QCLN',  name: 'First Trust NASDAQ Clean Edge Green Energy',   type: 'ETF', sdgs: [7, 9, 13] },
+      { symbol: 'TAN',   name: 'Invesco Solar ETF',                            type: 'ETF', sdgs: [7, 13] },
+      { symbol: 'FAN',   name: 'First Trust Global Wind Energy ETF',           type: 'ETF', sdgs: [7, 13] },
+      { symbol: 'CNRG',  name: 'SPDR S&P Kensho Clean Power ETF',              type: 'ETF', sdgs: [7, 9, 13] },
+      { symbol: 'PHO',   name: 'Invesco Water Resources ETF',                  type: 'ETF', sdgs: [6, 14, 15] },
+      { symbol: 'CGW',   name: 'Invesco S&P Global Water ETF',                 type: 'ETF', sdgs: [6, 14] },
+      { symbol: 'ESGU',  name: 'iShares ESG Aware MSCI USA ETF',               type: 'ETF', sdgs: [5, 8, 10, 12, 13, 16] },
+      { symbol: 'ESGV',  name: 'Vanguard ESG US Stock ETF',                    type: 'ETF', sdgs: [5, 8, 10, 12, 13, 16] },
+      { symbol: 'SUSA',  name: 'iShares MSCI USA ESG Select ETF',              type: 'ETF', sdgs: [3, 5, 8, 10, 12, 13] },
+      { symbol: 'DSI',   name: 'iShares MSCI KLD 400 Social ETF',              type: 'ETF', sdgs: [3, 5, 8, 10, 12, 13, 16] },
+      { symbol: 'XLV',   name: 'Health Care Select Sector SPDR',               type: 'ETF', sdgs: [3] },
+      { symbol: 'HEAL',  name: 'iShares Genomics Immunology & Healthcare ETF', type: 'ETF', sdgs: [3, 9] },
+      { symbol: 'EDUT',  name: 'Global X Education ETF',                       type: 'ETF', sdgs: [4, 10] },
+      { symbol: 'PAVE',  name: 'Global X US Infrastructure Development ETF',   type: 'ETF', sdgs: [9, 11] },
+      { symbol: 'DRIV',  name: 'Global X Autonomous & Electric Vehicles ETF',  type: 'ETF', sdgs: [9, 11, 13] },
+      { symbol: 'EMQQ',  name: 'Emerging Markets Internet & Ecommerce ETF',    type: 'ETF', sdgs: [1, 8, 10] },
+      { symbol: 'VYMI',  name: 'Vanguard International High Dividend ETF',     type: 'ETF', sdgs: [8, 10] },
+      { symbol: 'VTI',   name: 'Vanguard Total Stock Market ETF',              type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'VOO',   name: 'Vanguard S&P 500 ETF',                         type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'SPY',   name: 'SPDR S&P 500 ETF',                             type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'IVV',   name: 'iShares Core S&P 500 ETF',                     type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'QQQ',   name: 'Invesco NASDAQ-100 ETF',                        type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'VEA',   name: 'Vanguard FTSE Developed Markets ETF',          type: 'ETF', sdgs: [8, 10] },
+      { symbol: 'VWO',   name: 'Vanguard FTSE Emerging Markets ETF',           type: 'ETF', sdgs: [1, 8, 10] },
+      { symbol: 'BND',   name: 'Vanguard Total Bond Market ETF',               type: 'ETF', sdgs: [8] },
+      { symbol: 'AGG',   name: 'iShares Core U.S. Aggregate Bond ETF',         type: 'ETF', sdgs: [8] },
+      { symbol: 'VXUS',  name: 'Vanguard Total International Stock ETF',       type: 'ETF', sdgs: [8, 10] },
+      { symbol: 'VGT',   name: 'Vanguard Information Technology ETF',          type: 'ETF', sdgs: [9] },
+      { symbol: 'XLK',   name: 'Technology Select Sector SPDR',                type: 'ETF', sdgs: [9] },
+      { symbol: 'VNQ',   name: 'Vanguard Real Estate ETF',                     type: 'ETF', sdgs: [11] },
+      { symbol: 'GLD',   name: 'SPDR Gold Shares',                             type: 'ETF', sdgs: [] },
+      { symbol: 'IAU',   name: 'iShares Gold Trust',                           type: 'ETF', sdgs: [] },
+      { symbol: 'DIA',   name: 'SPDR Dow Jones Industrial Average ETF',        type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'MDY',   name: 'SPDR S&P MidCap 400 ETF',                      type: 'ETF', sdgs: [8] },
+      // Vanguard ETFs
+      { symbol: 'VT',    name: 'Vanguard Total World Stock ETF',               type: 'ETF', sdgs: [8, 10] },
+      { symbol: 'VUG',   name: 'Vanguard Growth ETF',                          type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'VTV',   name: 'Vanguard Value ETF',                           type: 'ETF', sdgs: [8] },
+      { symbol: 'VYM',   name: 'Vanguard High Dividend Yield ETF',             type: 'ETF', sdgs: [8] },
+      { symbol: 'VIG',   name: 'Vanguard Dividend Appreciation ETF',           type: 'ETF', sdgs: [8] },
+      { symbol: 'VO',    name: 'Vanguard Mid-Cap ETF',                         type: 'ETF', sdgs: [8] },
+      { symbol: 'VB',    name: 'Vanguard Small-Cap ETF',                       type: 'ETF', sdgs: [8] },
+      { symbol: 'VV',    name: 'Vanguard Large-Cap ETF',                       type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'VPU',   name: 'Vanguard Utilities ETF',                       type: 'ETF', sdgs: [7, 11] },
+      { symbol: 'VSGX',  name: 'Vanguard ESG International Stock ETF',         type: 'ETF', sdgs: [5, 8, 10, 13, 16] },
+      // Vanguard Mutual Funds — admiral shares
+      { symbol: 'VTSAX', name: 'Vanguard Total Stock Market Index Admiral',    type: 'MF',  sdgs: [8, 9] },
+      { symbol: 'VFIAX', name: 'Vanguard 500 Index Fund Admiral',              type: 'MF',  sdgs: [8, 9] },
+      { symbol: 'VBTLX', name: 'Vanguard Total Bond Market Index Admiral',     type: 'MF',  sdgs: [8] },
+      { symbol: 'VTIAX', name: 'Vanguard Total International Stock Index',     type: 'MF',  sdgs: [8, 10] },
+      { symbol: 'VWELX', name: 'Vanguard Wellington Fund',                     type: 'MF',  sdgs: [8] },
+      { symbol: 'VWINX', name: 'Vanguard Wellesley Income Fund',               type: 'MF',  sdgs: [8] },
+      { symbol: 'VEXAX', name: 'Vanguard Extended Market Index Admiral',       type: 'MF',  sdgs: [8] },
+      { symbol: 'VIMAX', name: 'Vanguard Mid-Cap Index Fund Admiral',          type: 'MF',  sdgs: [8] },
+      { symbol: 'VSMAX', name: 'Vanguard Small-Cap Index Fund Admiral',        type: 'MF',  sdgs: [8] },
+      { symbol: 'VEMAX', name: 'Vanguard Emerging Markets Stock Index Admiral',type: 'MF',  sdgs: [1, 8, 10] },
+      { symbol: 'VBIAX', name: 'Vanguard Balanced Index Fund Admiral',         type: 'MF',  sdgs: [8] },
+      { symbol: 'VGSLX', name: 'Vanguard Real Estate Index Fund Admiral',      type: 'MF',  sdgs: [11] },
+      // iShares ETFs
+      { symbol: 'IWM',   name: 'iShares Russell 2000 ETF',                     type: 'ETF', sdgs: [8] },
+      { symbol: 'IWF',   name: 'iShares Russell 1000 Growth ETF',              type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'IWD',   name: 'iShares Russell 1000 Value ETF',               type: 'ETF', sdgs: [8] },
+      { symbol: 'IJR',   name: 'iShares Core S&P Small-Cap ETF',               type: 'ETF', sdgs: [8] },
+      { symbol: 'IJH',   name: 'iShares Core S&P Mid-Cap ETF',                 type: 'ETF', sdgs: [8] },
+      { symbol: 'IEMG',  name: 'iShares Core MSCI Emerging Markets ETF',       type: 'ETF', sdgs: [1, 8, 10] },
+      { symbol: 'EFA',   name: 'iShares MSCI EAFE ETF',                        type: 'ETF', sdgs: [8, 10] },
+      { symbol: 'EEM',   name: 'iShares MSCI Emerging Markets ETF',            type: 'ETF', sdgs: [1, 8, 10] },
+      { symbol: 'ESGD',  name: 'iShares MSCI EAFE ESG Screened ETF',           type: 'ETF', sdgs: [5, 8, 10, 13, 16] },
+      { symbol: 'ESGE',  name: 'iShares MSCI EM ESG Select ETF',               type: 'ETF', sdgs: [1, 5, 8, 10, 13] },
+      { symbol: 'LQD',   name: 'iShares iBoxx $ Inv Grade Corp Bond ETF',      type: 'ETF', sdgs: [8] },
+      { symbol: 'HYG',   name: 'iShares iBoxx $ High Yield Corp Bond ETF',     type: 'ETF', sdgs: [8] },
+      { symbol: 'TLT',   name: 'iShares 20+ Year Treasury Bond ETF',           type: 'ETF', sdgs: [8] },
+      { symbol: 'IEF',   name: 'iShares 7-10 Year Treasury Bond ETF',          type: 'ETF', sdgs: [8] },
+      { symbol: 'SHY',   name: 'iShares 1-3 Year Treasury Bond ETF',           type: 'ETF', sdgs: [8] },
+      { symbol: 'TIP',   name: 'iShares TIPS Bond ETF',                        type: 'ETF', sdgs: [8] },
+      { symbol: 'GOVT',  name: 'iShares U.S. Treasury Bond ETF',               type: 'ETF', sdgs: [8] },
+      // Fidelity Funds
+      { symbol: 'FXAIX', name: 'Fidelity 500 Index Fund',                      type: 'MF',  sdgs: [8, 9] },
+      { symbol: 'FSKAX', name: 'Fidelity Total Market Index Fund',             type: 'MF',  sdgs: [8, 9] },
+      { symbol: 'FZROX', name: 'Fidelity ZERO Total Market Index Fund',        type: 'MF',  sdgs: [8, 9] },
+      { symbol: 'FZILX', name: 'Fidelity ZERO International Index Fund',       type: 'MF',  sdgs: [8, 10] },
+      { symbol: 'FSMAX', name: 'Fidelity Extended Market Index Fund',          type: 'MF',  sdgs: [8] },
+      { symbol: 'FCNTX', name: 'Fidelity Contrafund',                          type: 'MF',  sdgs: [8, 9] },
+      { symbol: 'FBALX', name: 'Fidelity Balanced Fund',                       type: 'MF',  sdgs: [8] },
+      { symbol: 'FBGRX', name: 'Fidelity Blue Chip Growth Fund',               type: 'MF',  sdgs: [8, 9] },
+      // Schwab ETFs
+      { symbol: 'SCHB',  name: 'Schwab U.S. Broad Market ETF',                 type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'SCHX',  name: 'Schwab U.S. Large-Cap ETF',                    type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'SCHG',  name: 'Schwab U.S. Large-Cap Growth ETF',             type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'SCHV',  name: 'Schwab U.S. Large-Cap Value ETF',              type: 'ETF', sdgs: [8] },
+      { symbol: 'SCHA',  name: 'Schwab U.S. Small-Cap ETF',                    type: 'ETF', sdgs: [8] },
+      { symbol: 'SCHM',  name: 'Schwab U.S. Mid-Cap ETF',                      type: 'ETF', sdgs: [8] },
+      { symbol: 'SCHD',  name: 'Schwab U.S. Dividend Equity ETF',              type: 'ETF', sdgs: [8] },
+      { symbol: 'SCHF',  name: 'Schwab International Equity ETF',              type: 'ETF', sdgs: [8, 10] },
+      { symbol: 'SCHE',  name: 'Schwab Emerging Markets Equity ETF',           type: 'ETF', sdgs: [1, 8, 10] },
+      { symbol: 'SCHZ',  name: 'Schwab U.S. Aggregate Bond ETF',               type: 'ETF', sdgs: [8] },
+      { symbol: 'SCHP',  name: 'Schwab U.S. TIPS ETF',                         type: 'ETF', sdgs: [8] },
+      // Sector ETFs
+      { symbol: 'XLU',   name: 'Utilities Select Sector SPDR',                 type: 'ETF', sdgs: [7, 11] },
+      { symbol: 'XLE',   name: 'Energy Select Sector SPDR',                    type: 'ETF', sdgs: [8, 9] },
+      { symbol: 'XLF',   name: 'Financial Select Sector SPDR',                 type: 'ETF', sdgs: [8] },
+      { symbol: 'XLI',   name: 'Industrial Select Sector SPDR',                type: 'ETF', sdgs: [9] },
+      { symbol: 'XLB',   name: 'Materials Select Sector SPDR',                 type: 'ETF', sdgs: [9] },
+      { symbol: 'XLY',   name: 'Consumer Discretionary Select Sector SPDR',    type: 'ETF', sdgs: [8] },
+      { symbol: 'XLP',   name: 'Consumer Staples Select Sector SPDR',          type: 'ETF', sdgs: [2, 8] },
+      { symbol: 'XLRE',  name: 'Real Estate Select Sector SPDR',               type: 'ETF', sdgs: [11] },
+      // ESG-specific
+      { symbol: 'VFTAX', name: 'Vanguard FTSE Social Index Fund',              type: 'MF',  sdgs: [5, 8, 10, 12, 13, 16] },
+      { symbol: 'PARNX', name: 'Parnassus Core Equity Fund',                   type: 'MF',  sdgs: [3, 5, 8, 10, 12, 13] },
+      { symbol: 'TICRX', name: 'TIAA-CREF Social Choice Equity Fund',          type: 'MF',  sdgs: [3, 5, 8, 10, 12, 13, 16] },
+      { symbol: 'CRAIX', name: 'Calvert Equity Fund',                          type: 'MF',  sdgs: [3, 5, 8, 10, 12, 13, 16] },
+      { symbol: 'PRBLX', name: 'Parnassus Mid Cap Fund',                       type: 'MF',  sdgs: [8, 10, 12, 13] },
+      { symbol: 'BIAWX', name: 'Calvert International Responsible Index',      type: 'MF',  sdgs: [5, 8, 10, 12, 13, 16] },
+    ];
+
+    const STOCKS = [
+      { symbol:'NEE',  name:'NextEra Energy',          sector:'Utilities',           sdgs:[7,13],       negFlags:[],        negReason:'' },
+      { symbol:'FSLR', name:'First Solar',             sector:'Energy',              sdgs:[7,9,13],     negFlags:[],        negReason:'' },
+      { symbol:'ENPH', name:'Enphase Energy',          sector:'Energy',              sdgs:[7,9,13],     negFlags:[],        negReason:'' },
+      { symbol:'RUN',  name:'Sunrun',                  sector:'Energy',              sdgs:[7,11,13],    negFlags:[],        negReason:'' },
+      { symbol:'XOM',  name:'ExxonMobil',              sector:'Energy',              sdgs:[8,9],        negFlags:[13,14,15],negReason:'Fossil fuel extraction is a primary driver of carbon emissions and poses ongoing risks to marine and land ecosystems.' },
+      { symbol:'CVX',  name:'Chevron',                 sector:'Energy',              sdgs:[8,9],        negFlags:[13,14],   negReason:'Large-scale oil and gas production contributes significantly to greenhouse gas emissions and climate change.' },
+      { symbol:'COP',  name:'ConocoPhillips',          sector:'Energy',              sdgs:[8,9],        negFlags:[13,14],   negReason:'Fossil fuel extraction drives carbon emissions incompatible with Paris Agreement targets.' },
+      { symbol:'AWK',  name:'American Water Works',    sector:'Utilities',           sdgs:[6,11],       negFlags:[],        negReason:'' },
+      { symbol:'XYL',  name:'Xylem',                   sector:'Industrials',         sdgs:[6,9,11],     negFlags:[],        negReason:'' },
+      { symbol:'WM',   name:'Waste Management',        sector:'Industrials',         sdgs:[11,12,13],   negFlags:[15],      negReason:'Landfill operations release methane and leachates that can degrade surrounding land and soil quality.' },
+      { symbol:'ISRG', name:'Intuitive Surgical',      sector:'Healthcare',          sdgs:[3,9],        negFlags:[],        negReason:'' },
+      { symbol:'ABT',  name:'Abbott Laboratories',     sector:'Healthcare',          sdgs:[3,9,17],     negFlags:[],        negReason:'' },
+      { symbol:'MDT',  name:'Medtronic',               sector:'Healthcare',          sdgs:[3,9],        negFlags:[],        negReason:'' },
+      { symbol:'MRNA', name:'Moderna',                 sector:'Healthcare',          sdgs:[3,17],       negFlags:[10],      negReason:'Drug pricing and IP policies have limited vaccine access in lower-income countries.' },
+      { symbol:'PFE',  name:'Pfizer',                  sector:'Healthcare',          sdgs:[3,17],       negFlags:[10],      negReason:'Historical drug pricing practices have raised concerns about affordable medicine access globally.' },
+      { symbol:'JNJ',  name:'Johnson & Johnson',       sector:'Healthcare',          sdgs:[3],          negFlags:[3,10],    negReason:'Subject to major litigation over opioid contributions and talc-related health harms; drug access concerns in emerging markets.' },
+      { symbol:'UNH',  name:'UnitedHealth Group',      sector:'Healthcare',          sdgs:[3],          negFlags:[10],      negReason:'Insurance coverage gaps and claim denial practices raise concerns about equitable healthcare access.' },
+      { symbol:'MSFT', name:'Microsoft',               sector:'Technology',          sdgs:[4,9,13,17],  negFlags:[12],      negReason:'Data center energy consumption and hardware lifecycle contribute to electronic waste and resource use.' },
+      { symbol:'AAPL', name:'Apple',                   sector:'Technology',          sdgs:[4,9],        negFlags:[8,12],    negReason:'Supply chain labor controversies in manufacturing; electronic waste and device repairability concerns.' },
+      { symbol:'GOOGL',name:'Alphabet (Google)',        sector:'Technology',          sdgs:[4,9,17],     negFlags:[10,16],   negReason:'Market concentration concerns; data privacy practices and content moderation raise accountability issues.' },
+      { symbol:'META', name:'Meta Platforms',          sector:'Technology',          sdgs:[17],         negFlags:[10,16],   negReason:'Documented spread of misinformation; extensive personal data collection raises privacy concerns.' },
+      { symbol:'AMZN', name:'Amazon',                  sector:'Consumer Disc.',      sdgs:[9,11,17],    negFlags:[8,12],    negReason:'Ongoing labor practice controversies in warehouses; significant packaging waste and emissions.' },
+      { symbol:'TSLA', name:'Tesla',                   sector:'Consumer Disc.',      sdgs:[7,9,11,13],  negFlags:[8,12],    negReason:'Workplace safety and labor relations controversies; battery mineral supply chain raises environmental concerns.' },
+      { symbol:'NVDA', name:'NVIDIA',                  sector:'Technology',          sdgs:[9],          negFlags:[12],      negReason:'GPU production and AI workloads are highly energy-intensive; hardware disposal contributes to e-waste.' },
+      { symbol:'CRM',  name:'Salesforce',              sector:'Technology',          sdgs:[4,8,9],      negFlags:[],        negReason:'' },
+      { symbol:'KO',   name:'Coca-Cola',               sector:'Consumer Staples',    sdgs:[8],          negFlags:[3,6,12],  negReason:'Sugar-sweetened beverages linked to health concerns; extensive plastic packaging; significant water use in water-stressed regions.' },
+      { symbol:'WMT',  name:'Walmart',                 sector:'Consumer Staples',    sdgs:[2,8,11],     negFlags:[8,12],    negReason:'Labor wage and working condition controversies; large retail footprint generates significant plastic and food waste.' },
+      { symbol:'MCD',  name:"McDonald's",              sector:'Consumer Disc.',      sdgs:[8],          negFlags:[2,12,13], negReason:'Ultra-processed food linked to poor nutritional outcomes; significant packaging waste and land use for beef supply chain.' },
+      { symbol:'SBUX', name:'Starbucks',               sector:'Consumer Disc.',      sdgs:[2,8],        negFlags:[8,12],    negReason:'Labor relations controversies including union disputes; single-use cups contribute to waste.' },
+      { symbol:'NKE',  name:'Nike',                    sector:'Consumer Disc.',      sdgs:[3,8,11],     negFlags:[8,12],    negReason:'Ongoing supply chain labor concerns; product lifecycle and textile waste.' },
+      { symbol:'BLK',  name:'BlackRock',               sector:'Financials',          sdgs:[8,10,17],    negFlags:[13],      negReason:'Largest investor in fossil fuel companies globally; financed emissions from portfolio are substantial.' },
+      { symbol:'JPM',  name:'JPMorgan Chase',          sector:'Financials',          sdgs:[8,17],       negFlags:[10,13],   negReason:'Largest financier of fossil fuel expansion globally since 2016; lending practices raise financial inclusion concerns.' },
+      { symbol:'V',    name:'Visa',                    sector:'Financials',          sdgs:[8,10,17],    negFlags:[],        negReason:'' },
+      { symbol:'MA',   name:'Mastercard',              sector:'Financials',          sdgs:[8,10,17],    negFlags:[],        negReason:'' },
+      { symbol:'CAT',  name:'Caterpillar',             sector:'Industrials',         sdgs:[9,11],       negFlags:[13,15],   negReason:'Heavy machinery drives significant carbon emissions; mining equipment use contributes to land degradation.' },
+      { symbol:'DE',   name:'Deere & Company',         sector:'Industrials',         sdgs:[2,9],        negFlags:[12,15],   negReason:'Conventional agriculture equipment promotes chemical-intensive farming linked to soil degradation.' },
+      { symbol:'ALB',  name:'Albemarle',               sector:'Materials',           sdgs:[7,9],        negFlags:[14,15],   negReason:'Lithium mining raises concerns about water use in arid regions and impacts on local ecosystems.' },
+      { symbol:'FCX',  name:'Freeport-McMoRan',        sector:'Materials',           sdgs:[9],          negFlags:[13,14,15],negReason:'Copper mining causes significant land disturbance, tailings waste, and watershed contamination risks.' },
+      { symbol:'UBER', name:'Uber Technologies',       sector:'Transportation',      sdgs:[11],         negFlags:[8],       negReason:'Gig economy model raises concerns about worker classification and fair wages for drivers.' },
+      { symbol:'BYND', name:'Beyond Meat',             sector:'Food & Ag',           sdgs:[2,3,12,13],  negFlags:[],        negReason:'' },
+      { symbol:'ADM',  name:'Archer-Daniels-Midland',  sector:'Food & Ag',           sdgs:[2,8],        negFlags:[12,15],   negReason:'Commodity agriculture supply chains linked to deforestation; fertilizer use contributes to nitrogen pollution.' },
+      { symbol:'AMT',  name:'American Tower',          sector:'Real Estate',         sdgs:[9,11,17],    negFlags:[],        negReason:'' },
+      { symbol:'TMUS', name:'T-Mobile',                sector:'Communication',       sdgs:[9,10,17],    negFlags:[],        negReason:'' },
+      { symbol:'LMT',  name:'Lockheed Martin',         sector:'Aerospace & Defense', sdgs:[9],          negFlags:[16],      negReason:'Primary weapons manufacturer; products are used in armed conflicts that cause civilian casualties and undermine peace.' },
+      { symbol:'MO',   name:'Altria Group',            sector:'Consumer Staples',    sdgs:[8],          negFlags:[3,10],    negReason:'Tobacco products are the leading cause of preventable death globally; marketing historically targeted lower-income communities.' },
+      { symbol:'COUR', name:'Coursera',                sector:'Education',           sdgs:[4,10,17],    negFlags:[],        negReason:'' },
+      { symbol:'GEV',  name:'GE Vernova',              sector:'Industrials',         sdgs:[7,9,13],     negFlags:[],        negReason:'' },
+    ];
+
+    const SAMPLE_TICKERS = ['ICLN', 'ESGU', 'AAPL', 'TSLA', 'XOM', 'VFTAX', 'PARNX', 'JPM', 'MSFT', 'PHO'];
+
+    // ── CSV Parser ────────────────────────────────────────────────────────────
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
+      if (lines.length < 2) return [];
+      const header = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+      const symIdx = header.findIndex(h =>
+        ['symbol', 'ticker', 'security symbol', 'cusip'].some(k => h.includes(k))
+      );
+      if (symIdx === -1) {
+        // Fallback: pull anything that looks like a ticker from each line
+        const tickers = [];
+        for (let i = 1; i < lines.length; i++) {
+          const m = lines[i].match(/\b([A-Z]{1,5}X?)\b/);
+          if (m) tickers.push(m[1]);
+        }
+        return [...new Set(tickers)];
+      }
+      const tickers = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+        const sym = (cols[symIdx] || '').toUpperCase().split('.')[0];
+        if (sym && sym !== '--' && sym !== 'N/A' && /^[A-Z]/.test(sym)) tickers.push(sym);
+      }
+      return [...new Set(tickers)];
+    }
+
+    function parseTickerText(text) {
+      return [...new Set(
+        text.split(/[\s,;]+/)
+          .map(t => t.trim().toUpperCase().replace(/[^A-Z0-9]/g, ''))
+          .filter(t => t.length >= 1 && t.length <= 6 && /^[A-Z]/.test(t))
+      )];
+    }
+
+    // ── Matching ──────────────────────────────────────────────────────────────
+    function matchTickers(tickers) {
+      return tickers.map(sym => {
+        const fund  = FUNDS.find(f => f.symbol.toUpperCase() === sym) || null;
+        const stock = !fund ? (STOCKS.find(s => s.symbol.toUpperCase() === sym) || null) : null;
+        return { symbol: sym, fund, stock, isStock: !!stock };
+      });
+    }
+
+    // ── Render Results ────────────────────────────────────────────────────────
+    function renderResults(holdings) {
+      const matched = holdings.filter(h => h.fund || h.stock);
+      const coverage = new Array(18).fill(0);
+      matched.forEach(h => {
+        const item = h.fund || h.stock;
+        item.sdgs.forEach(s => coverage[s]++);
+      });
+      const coveredCount = coverage.slice(1).filter(c => c > 0).length;
+      const flaggedCount = holdings.filter(h => h.stock && h.stock.negFlags && h.stock.negFlags.length > 0).length;
+
+      document.getElementById('statTotal').textContent   = holdings.length;
+      document.getElementById('statMatched').textContent = matched.length;
+      document.getElementById('statGoals').textContent   = coveredCount;
+      document.getElementById('statFlags').textContent   = flaggedCount;
+      document.getElementById('statGaps').textContent    = 17 - coveredCount;
+
+      // SDG Coverage Grid
+      const grid = document.getElementById('sdgCoverageGrid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= 17; i++) {
+        const count = coverage[i];
+        const card = document.createElement('div');
+        card.className = 'sdg-cov-card' + (count > 0 ? ' covered' : '');
+        card.title = SDG_INFO[i].name + (count > 0 ? ` — ${count} holding${count > 1 ? 's' : ''}` : ' — Not covered');
+        const num = String(i).padStart(2, '0');
+        card.innerHTML = `
+          <img src="sdg-icons/${num}.jpg" alt="SDG ${i}">
+          <div class="sdg-cov-badge">${count > 0 ? `${count} holding${count > 1 ? 's' : ''}` : 'Not covered'}</div>`;
+        grid.appendChild(card);
+      }
+
+      // Holdings Table — add Flags column header
+      document.querySelector('.holdings-table thead tr').innerHTML = `
+        <th style="width:90px">Symbol</th>
+        <th>Fund / Security</th>
+        <th style="width:180px">SDGs</th>
+        <th style="width:160px">Flags</th>
+        <th style="width:130px">Status</th>`;
+
+      const tbody = document.getElementById('holdingsTbody');
+      tbody.innerHTML = '';
+      [...matched, ...holdings.filter(h => !h.fund && !h.stock)].forEach(h => {
+        const item = h.fund || h.stock;
+        const tr = document.createElement('tr');
+
+        const sdgTags = item
+          ? item.sdgs.map(s =>
+              `<span class="sdg-dot" style="background:${SDG_INFO[s].color}" title="SDG ${s}: ${SDG_INFO[s].name}">${s}</span>`
+            ).join('')
+          : '<span style="color:var(--text-3);font-size:12px">—</span>';
+
+        const flagTags = (h.stock && h.stock.negFlags && h.stock.negFlags.length)
+          ? `<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+               <span style="font-size:11px;color:#EF4444;font-weight:600;" title="${h.stock.negReason}">⚠</span>
+               ${h.stock.negFlags.map(s =>
+                   `<span class="sdg-dot" style="background:rgba(239,68,68,0.12);color:#EF4444;border:1px solid rgba(239,68,68,0.3);" title="Negative: SDG ${s} — ${h.stock.negReason}">${s}</span>`
+                 ).join('')}
+             </div>`
+          : '<span style="color:var(--text-3);font-size:12px">—</span>';
+
+        const nameCell = item
+          ? (h.stock ? `${item.name} <span style="font-size:11px;color:var(--text-3)">(${h.stock.sector})</span>` : item.name)
+          : '<span style="color:var(--text-3)">Unknown security</span>';
+
+        const status = h.fund
+          ? `<span class="td-status-badge badge-matched">✓ Fund</span>`
+          : h.stock
+          ? `<span class="td-status-badge" style="background:#FEF9C3;color:#92400E;border:1px solid #FDE68A;">Stock</span>`
+          : `<span class="td-status-badge badge-unassessed">Not in database</span>`;
+
+        tr.innerHTML = `
+          <td class="td-symbol">${h.symbol}</td>
+          <td class="td-name">${nameCell}</td>
+          <td><div class="td-sdg-tags">${sdgTags}</div></td>
+          <td>${flagTags}</td>
+          <td>${status}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      // Gap Analysis
+      const gapGrid = document.getElementById('gapGrid');
+      gapGrid.innerHTML = '';
+      const gaps = [];
+      for (let i = 1; i <= 17; i++) { if (coverage[i] === 0) gaps.push(i); }
+
+      if (gaps.length === 0) {
+        gapGrid.innerHTML = `
+          <div class="no-gaps">
+            <div class="no-gaps-emoji">🌍</div>
+            <h3>Full SDG coverage!</h3>
+            <p>Your portfolio touches all 17 UN Sustainable Development Goals.</p>
+          </div>`;
+      } else {
+        gaps.forEach(sdgNum => {
+          const info = SDG_INFO[sdgNum];
+          const suggestions = FUNDS.filter(f => f.sdgs.includes(sdgNum)).slice(0, 2);
+          const num = String(sdgNum).padStart(2, '0');
+          const card = document.createElement('div');
+          card.className = 'gap-card';
+          card.innerHTML = `
+            <div class="gap-card-header">
+              <div class="gap-card-icon"><img src="sdg-icons/${num}.jpg" alt="SDG ${sdgNum}"></div>
+              <div>
+                <div class="gap-card-label">SDG ${sdgNum}: ${info.short}</div>
+                <div class="gap-card-num">No holdings aligned</div>
+              </div>
+            </div>
+            <div class="gap-card-body">
+              <p>Funds that address this goal:</p>
+              <div>
+                ${suggestions.length
+                  ? suggestions.map(f => `
+                      <div class="gap-fund-item">
+                        <span class="gap-fund-ticker">${f.symbol}</span>
+                        <span class="gap-fund-name">${f.name}</span>
+                        <a href="screener.html" class="gap-fund-link">View →</a>
+                      </div>`).join('')
+                  : '<span style="color:var(--text-3);font-size:12px">No funds in database yet</span>'
+                }
+              </div>
+            </div>`;
+          gapGrid.appendChild(card);
+        });
+      }
+
+      document.getElementById('resultsSection').classList.add('visible');
+      setTimeout(() => {
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+
+    // ── Event Handlers ────────────────────────────────────────────────────────
+    const dropzone  = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault(); dropzone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) readFile(file);
+    });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) readFile(fileInput.files[0]); });
+
+    function readFile(file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const tickers = parseCSV(e.target.result);
+        if (tickers.length) renderResults(matchTickers(tickers));
+        else alert('No ticker symbols found. Try pasting tickers manually below.');
+      };
+      reader.readAsText(file);
+    }
+
+    document.getElementById('scanBtn').addEventListener('click', () => {
+      const text = document.getElementById('tickerInput').value.trim();
+      if (!text) return;
+      renderResults(matchTickers(parseTickerText(text)));
+    });
+
+    document.getElementById('tickerInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('scanBtn').click(); }
+    });
+
+    document.getElementById('loadSample').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('tickerInput').value = SAMPLE_TICKERS.join(', ');
+      document.getElementById('scanBtn').click();
+    });
+
+    document.getElementById('rescanBtn').addEventListener('click', () => {
+      document.getElementById('resultsSection').classList.remove('visible');
+      document.getElementById('tickerInput').value = '';
+      fileInput.value = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Tab switching ──────────────────────────────────────────────────────────
+    document.getElementById('tabScan').addEventListener('click', () => {
+      document.getElementById('tabScan').classList.add('active');
+      document.getElementById('tabBuild').classList.remove('active');
+      document.getElementById('scanSection').classList.remove('hidden');
+      document.getElementById('builderSection').classList.add('hidden');
+    });
+    document.getElementById('tabBuild').addEventListener('click', () => {
+      document.getElementById('tabBuild').classList.add('active');
+      document.getElementById('tabScan').classList.remove('active');
+      document.getElementById('builderSection').classList.remove('hidden');
+      document.getElementById('scanSection').classList.add('hidden');
+      document.getElementById('resultsSection').classList.remove('visible');
+    });
+
+    // ── Portfolio Builder ──────────────────────────────────────────────────────
+    const ASSET_CLASS_MAP = {
+      ICLN:'Sector — Clean Energy', QCLN:'Sector — Clean Energy', TAN:'Sector — Clean Energy',
+      FAN:'Sector — Clean Energy',  CNRG:'Sector — Clean Energy',
+      PHO:'Sector — Water & Env.',  CGW:'Sector — Water & Env.',
+      ESGU:'ESG Equity', ESGV:'ESG Equity', SUSA:'ESG Equity', DSI:'ESG Equity',
+      ESGD:'ESG Equity', ESGE:'ESG Equity', VSGX:'ESG Equity',
+      VFTAX:'ESG Equity', PARNX:'ESG Equity', TICRX:'ESG Equity',
+      CRAIX:'ESG Equity', PRBLX:'ESG Equity', BIAWX:'ESG Equity',
+      XLV:'Sector — Healthcare', HEAL:'Sector — Healthcare',
+      EDUT:'Sector — Education',
+      PAVE:'Sector — Infrastructure', DRIV:'Sector — Mobility & EV',
+      EMQQ:'Emerging Markets', VWO:'Emerging Markets', IEMG:'Emerging Markets',
+      EEM:'Emerging Markets', SCHE:'Emerging Markets', VEMAX:'Emerging Markets',
+      VEA:'Intl Developed', EFA:'Intl Developed', SCHF:'Intl Developed',
+      VYMI:'Intl Equity', VXUS:'Intl Equity', FZILX:'Intl Equity', VTIAX:'Intl Equity',
+      VT:'Global Equity',
+      VTI:'US Equity', VOO:'US Equity', SPY:'US Equity', IVV:'US Equity', QQQ:'US Equity',
+      DIA:'US Equity', MDY:'US Equity', VUG:'US Equity', VTV:'US Equity', VYM:'US Equity',
+      VIG:'US Equity', VO:'US Equity', VB:'US Equity', VV:'US Equity',
+      IWM:'US Equity', IWF:'US Equity', IWD:'US Equity', IJR:'US Equity', IJH:'US Equity',
+      SCHB:'US Equity', SCHX:'US Equity', SCHG:'US Equity', SCHV:'US Equity',
+      SCHA:'US Equity', SCHM:'US Equity', SCHD:'US Equity',
+      VTSAX:'US Equity', VFIAX:'US Equity', VEXAX:'US Equity', VIMAX:'US Equity',
+      VSMAX:'US Equity', FXAIX:'US Equity', FSKAX:'US Equity', FZROX:'US Equity',
+      FSMAX:'US Equity', FCNTX:'US Equity', FBGRX:'US Equity',
+      BND:'US Bonds', AGG:'US Bonds', LQD:'US Bonds', HYG:'US Bonds', TLT:'US Bonds',
+      IEF:'US Bonds', SHY:'US Bonds', TIP:'US Bonds', GOVT:'US Bonds',
+      VBTLX:'US Bonds', SCHZ:'US Bonds', SCHP:'US Bonds',
+      FBALX:'Balanced', VWELX:'Balanced', VWINX:'Balanced', VBIAX:'Balanced',
+      VNQ:'Real Estate', XLRE:'Real Estate', VGSLX:'Real Estate',
+      GLD:'Commodities', IAU:'Commodities',
+      VGT:'Sector — Tech', XLK:'Sector — Tech',
+      VPU:'Sector — Utilities', XLU:'Sector — Utilities',
+      XLE:'Sector — Energy', XLF:'Sector — Financials',
+      XLI:'Sector — Industrials', XLB:'Sector — Materials',
+      XLY:'Sector — Cons. Disc.', XLP:'Sector — Cons. Staples',
+    };
+
+    const AC_META = {
+      'US Equity':             { color: '#3B82F6' },
+      'Intl Developed':        { color: '#7C3AED' },
+      'Intl Equity':           { color: '#8B5CF6' },
+      'Emerging Markets':      { color: '#EC4899' },
+      'Global Equity':         { color: '#06B6D4' },
+      'ESG Equity':            { color: '#009EDB' },
+      'US Bonds':              { color: '#F59E0B' },
+      'Real Estate':           { color: '#EF4444' },
+      'Commodities':           { color: '#B45309' },
+      'Balanced':              { color: '#6B7280' },
+      'Sector — Tech':         { color: '#0EA5E9' },
+      'Sector — Healthcare':   { color: '#10B981' },
+      'Sector — Clean Energy': { color: '#22C55E' },
+      'Sector — Energy':       { color: '#F97316' },
+      'Sector — Utilities':    { color: '#A78BFA' },
+      'Sector — Financials':   { color: '#64748B' },
+      'Sector — Industrials':  { color: '#78716C' },
+      'Sector — Materials':    { color: '#84CC16' },
+      'Sector — Cons. Disc.':  { color: '#FB923C' },
+      'Sector — Cons. Staples':{ color: '#D97706' },
+      'Sector — Water & Env.': { color: '#0891B2' },
+      'Sector — Infrastructure':{ color: '#6366F1' },
+      'Sector — Mobility & EV':{ color: '#16A34A' },
+      'Sector — Education':    { color: '#DB2777' },
+      'Individual Stock':      { color: '#475569' },
+    };
+
+    function getAcColor(cls) { return (AC_META[cls] || { color: '#6B7280' }).color; }
+    function getAssetClass(sym) {
+      if (ASSET_CLASS_MAP[sym]) return ASSET_CLASS_MAP[sym];
+      if (STOCKS.find(s => s.symbol === sym)) return 'Individual Stock';
+      return 'Other';
+    }
+
+    let builderHoldings = [];
+
+    function lookupBuilderTicker(sym) {
+      const f = FUNDS.find(x => x.symbol === sym);
+      if (f) return { symbol: f.symbol, name: f.name, sdgs: f.sdgs, negFlags: [], negReason: '', isStock: false };
+      const s = STOCKS.find(x => x.symbol === sym);
+      if (s) return { symbol: s.symbol, name: s.name, sdgs: s.sdgs, negFlags: s.negFlags, negReason: s.negReason, isStock: true };
+      return null;
+    }
+
+    function builderAdd(sym, alloc) {
+      sym = sym.trim().toUpperCase();
+      alloc = parseFloat(alloc);
+      const errEl = document.getElementById('builderErr');
+      errEl.textContent = '';
+      if (!sym) { errEl.textContent = 'Enter a ticker symbol.'; return; }
+      if (isNaN(alloc) || alloc <= 0) { errEl.textContent = 'Enter a valid allocation %.'; return; }
+      if (builderHoldings.find(h => h.symbol === sym)) { errEl.textContent = `${sym} is already in your portfolio.`; return; }
+      const item = lookupBuilderTicker(sym);
+      if (!item) { errEl.textContent = `"${sym}" not found in our database.`; return; }
+      builderHoldings.push({
+        symbol: item.symbol, name: item.name,
+        assetClass: getAssetClass(sym), alloc,
+        sdgs: item.sdgs, negFlags: item.negFlags,
+        negReason: item.negReason, isStock: item.isStock,
+      });
+      document.getElementById('builderTicker').value = '';
+      document.getElementById('builderAlloc').value = '';
+      document.getElementById('builderPreview').textContent = '';
+      renderBuilder();
+      document.getElementById('builderTicker').focus();
+    }
+
+    function builderRemove(sym) {
+      builderHoldings = builderHoldings.filter(h => h.symbol !== sym);
+      renderBuilder();
+    }
+
+    function builderUpdateAlloc(sym, val) {
+      const h = builderHoldings.find(h => h.symbol === sym);
+      if (h) { h.alloc = parseFloat(val) || 0; updateBuilderTotal(); renderBuilderAnalysis(); }
+    }
+
+    function builderNormalize() {
+      const total = builderHoldings.reduce((s, h) => s + h.alloc, 0);
+      if (!total) return;
+      builderHoldings.forEach(h => { h.alloc = Math.round((h.alloc / total) * 1000) / 10; });
+      renderBuilder();
+    }
+
+    function updateBuilderTotal() {
+      const total = Math.round(builderHoldings.reduce((s, h) => s + h.alloc, 0) * 10) / 10;
+      const el = document.getElementById('builderTotalPill');
+      el.textContent = total + '%';
+      el.className = 'builder-total-pill' + (Math.abs(total - 100) < 0.11 ? '' : total > 100 ? ' over' : ' under');
+    }
+
+    function renderBuilder() {
+      const wrap = document.getElementById('builderHoldingsWrap');
+      const analysis = document.getElementById('builderAnalysis');
+      if (!builderHoldings.length) { wrap.classList.add('hidden'); analysis.classList.add('hidden'); return; }
+      wrap.classList.remove('hidden');
+      analysis.classList.remove('hidden');
+      document.getElementById('builderCount').textContent = builderHoldings.length;
+      updateBuilderTotal();
+
+      document.getElementById('builderHoldingsList').innerHTML = builderHoldings.map(h => {
+        const c = getAcColor(h.assetClass);
+        const flags = h.negFlags && h.negFlags.length;
+        return `<div class="builder-holding-row">
+          <div class="bh-sym">${h.symbol}</div>
+          <div class="bh-name">${h.name}</div>
+          <div class="bh-class" style="background:${c}22;color:${c};border:1px solid ${c}44;">${h.assetClass}</div>
+          <input type="number" class="bh-alloc-input" value="${h.alloc}" min="0.1" max="100" step="0.1"
+                 onchange="builderUpdateAlloc('${h.symbol}',this.value)" />
+          <span class="bh-pct">%</span>
+          ${flags ? `<span class="bh-flags" title="${h.negReason}">⚠ ${flags} flag${flags>1?'s':''}</span>` : ''}
+          <button class="bh-remove" onclick="builderRemove('${h.symbol}')" title="Remove">×</button>
+        </div>`;
+      }).join('');
+
+      renderBuilderAnalysis();
+    }
+
+    function renderBuilderAnalysis() {
+      if (!builderHoldings.length) return;
+      const total = builderHoldings.reduce((s, h) => s + h.alloc, 0) || 1;
+
+      // Asset class breakdown
+      const acMap = {};
+      builderHoldings.forEach(h => { acMap[h.assetClass] = (acMap[h.assetClass] || 0) + h.alloc; });
+      const acEntries = Object.entries(acMap).sort((a, b) => b[1] - a[1]);
+
+      document.getElementById('acStackedBar').innerHTML = acEntries.map(([cls, val]) => {
+        const pct = (val / total) * 100;
+        return `<div class="ac-segment" style="width:${pct}%;background:${getAcColor(cls)};" title="${cls}: ${Math.round(pct)}%"></div>`;
+      }).join('');
+
+      document.getElementById('acLegend').innerHTML = acEntries.map(([cls, val]) => {
+        const pct = Math.round((val / total) * 1000) / 10;
+        return `<div class="ac-legend-row">
+          <div class="ac-legend-dot" style="background:${getAcColor(cls)};"></div>
+          <div class="ac-legend-name">${cls}</div>
+          <div class="ac-legend-pct">${pct}%</div>
+        </div>`;
+      }).join('');
+
+      // SDG impact
+      const sdgMap = {};
+      builderHoldings.forEach(h => { (h.sdgs||[]).forEach(sid => { sdgMap[sid] = (sdgMap[sid]||0) + h.alloc; }); });
+      const sdgEntries = Object.entries(sdgMap).map(([s,v]) => [+s,v]).sort((a,b) => b[1]-a[1]);
+
+      document.getElementById('sdgImpactBars').innerHTML = sdgEntries.length
+        ? sdgEntries.map(([sid, val]) => {
+            const info = SDG_INFO[sid];
+            const pct = Math.min(100, (val / total) * 100);
+            const pctDisplay = Math.round((val / total) * 1000) / 10;
+            return `<div class="sdg-impact-row">
+              <div class="sdg-impact-num" style="background:${info.color};">${String(sid).padStart(2,'0')}</div>
+              <div class="sdg-impact-label">${info.short}</div>
+              <div class="sdg-impact-bar-wrap">
+                <div class="sdg-impact-bar-fill" style="width:${pct}%;background:${info.color};opacity:0.8;"></div>
+              </div>
+              <div class="sdg-impact-pct">${pctDisplay}%</div>
+            </div>`;
+          }).join('')
+        : `<div style="font-size:12.5px;color:rgba(255,255,255,0.32);text-align:center;padding:20px 0;">No SDG alignment found.</div>`;
+
+      // Detail table
+      document.getElementById('builderDetailTbody').innerHTML = builderHoldings.map(h => {
+        const c = getAcColor(h.assetClass);
+        const dots = (h.sdgs||[]).map(sid => {
+          const info = SDG_INFO[sid];
+          return `<div style="width:20px;height:20px;border-radius:4px;background:${info.color}22;border:1px solid ${info.color}55;color:${info.color};font-size:8.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;">${String(sid).padStart(2,'0')}</div>`;
+        }).join('');
+        const flagsHtml = h.negFlags&&h.negFlags.length
+          ? `<span style="color:#F87171;font-size:11px;">⚠ ${h.negFlags.length}</span>`
+          : `<span style="color:rgba(255,255,255,0.18);font-size:12px;">—</span>`;
+        return `<tr>
+          <td><span style="font-weight:700;font-family:monospace;font-size:12.5px;color:#fff;">${h.symbol}</span></td>
+          <td style="color:rgba(255,255,255,0.65);font-size:12px;">${h.name}</td>
+          <td><span style="font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:4px;background:${c}22;color:${c};border:1px solid ${c}44;">${h.assetClass}</span></td>
+          <td style="text-align:right;font-weight:600;color:#fff;">${Math.round(h.alloc*10)/10}%</td>
+          <td><div style="display:flex;flex-wrap:wrap;gap:3px;">${dots}</div></td>
+          <td>${flagsHtml}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Ticker live preview
+    document.getElementById('builderTicker').addEventListener('input', () => {
+      const sym = document.getElementById('builderTicker').value.trim().toUpperCase();
+      const preview = document.getElementById('builderPreview');
+      document.getElementById('builderErr').textContent = '';
+      if (!sym) { preview.innerHTML = ''; return; }
+      const item = lookupBuilderTicker(sym);
+      preview.innerHTML = item
+        ? `<span class="pmatch">✓ ${item.name}</span> &nbsp;·&nbsp; ${getAssetClass(sym)}`
+        : '';
+    });
+    document.getElementById('builderTicker').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('builderAlloc').focus();
+    });
+    document.getElementById('builderAlloc').addEventListener('keydown', e => {
+      if (e.key === 'Enter') builderAdd(document.getElementById('builderTicker').value, document.getElementById('builderAlloc').value);
+    });
+    document.getElementById('addHoldingBtn').addEventListener('click', () => {
+      builderAdd(document.getElementById('builderTicker').value, document.getElementById('builderAlloc').value);
+    });
+    document.getElementById('normalizeBtn').addEventListener('click', builderNormalize);
+
+    const BUILDER_SAMPLE = [
+      ['VTSAX', 60], ['VXUS', 30], ['BND', 10]
+    ];
+    document.getElementById('loadSampleBuilder').addEventListener('click', e => {
+      e.preventDefault();
+      builderHoldings = [];
+      BUILDER_SAMPLE.forEach(([sym, alloc]) => builderAdd(sym, alloc));
+    });
+
+    // Scroll shadow on nav
+    (function() {
+      const nav = document.querySelector('nav');
+      function onScroll() { nav.classList.toggle('nav-scrolled', window.scrollY > 8); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

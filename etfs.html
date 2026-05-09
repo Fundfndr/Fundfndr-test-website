@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ETFs — FundFndr</title>
+  <title>Browse Funds — FundFndr</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -13,17 +13,17 @@
     :root {
       --bg:         #FAFAF8;
       --white:      #FFFFFF;
-      --navy:       #0B1220;
+      --navy:       #0F172A;
       --navy-2:     #16253D;
       --navy-3:     #1C2E4A;
-      --text:       #0B1220;
+      --text:       #0F172A;
       --text-2:     #6B7280;
       --text-3:     #9CA3AF;
       --border:     #E6E8EE;
       --border-2:   #D1D5DB;
-      --blue:       #2F6BFF;
-      --blue-light: #7EB3FF;
-      --blue-soft:  #DDE8FF;
+      --blue:       #009EDB;
+      --blue-light: #5BC4EE;
+      --blue-soft:  #CCF0FF;
       --green:      #34D399;
       --red:        #F87171;
       --violet:     #A78BFA;
@@ -52,7 +52,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(250,250,248,0.95);
+      background: rgba(15,23,42,0.96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -87,8 +87,8 @@
       border-radius: 6px;
       transition: color 0.15s, background 0.15s;
     }
-    .nav-links a:hover { color: var(--navy); background: rgba(11,18,32,0.05); }
-    .nav-links a.active { color: var(--navy); font-weight: 500; background: rgba(11,18,32,0.05); }
+    .nav-links a:hover { color: rgba(255,255,255,0.95); background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: #fff; font-weight: 500; background: rgba(255,255,255,0.08); }
 
     .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
@@ -99,7 +99,11 @@
       border-radius: 6px;
       transition: color 0.15s;
     }
-    .nav-login:hover { color: var(--navy); }
+    .nav-login:hover { color: #fff; }
+    nav.nav-scrolled {
+      border-bottom-color: rgba(255,255,255,0.1);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55);
+    }
 
     .btn-primary {
       display: inline-flex;
@@ -115,9 +119,9 @@
       border: none;
       cursor: pointer;
       transition: opacity 0.15s, box-shadow 0.15s;
-      box-shadow: 0 1px 3px rgba(47,107,255,0.3);
+      box-shadow: 0 1px 3px rgba(0,158,219,0.3);
     }
-    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(47,107,255,0.35); }
+    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(0,158,219,0.35); }
     .btn-primary:active { opacity: 0.75; }
 
     /* ── Page Header ──────────────────────────────────────── */
@@ -194,7 +198,7 @@
     .search-input::placeholder { color: var(--text-3); }
     .search-input:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(47,107,255,0.1);
+      box-shadow: 0 0 0 3px rgba(0,158,219,0.1);
     }
 
     /* ── Category Tabs ─────────────────────────────────────── */
@@ -245,8 +249,8 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow:
-        0 2px 8px rgba(11,18,32,0.12),
-        0 12px 40px rgba(11,18,32,0.22),
+        0 2px 8px rgba(15,23,42,0.12),
+        0 12px 40px rgba(15,23,42,0.22),
         0 0 0 1px rgba(255,255,255,0.04);
     }
 
@@ -336,8 +340,8 @@
       transition: background 0.15s;
       cursor: pointer;
     }
-    .fund-table tbody tr:hover { background: rgba(47,107,255,0.07); }
-    .fund-table tbody tr.row-selected { background: rgba(47,107,255,0.12); }
+    .fund-table tbody tr:hover { background: rgba(0,158,219,0.07); }
+    .fund-table tbody tr.row-selected { background: rgba(0,158,219,0.12); }
     .fund-table tbody tr:last-child { border-bottom: none; }
 
     .fund-table td {
@@ -386,9 +390,9 @@
       align-items: center;
       gap: 5px;
       padding: 6px 13px;
-      background: rgba(47,107,255,0.15);
+      background: rgba(0,158,219,0.15);
       color: var(--blue-light);
-      border: 1px solid rgba(47,107,255,0.3);
+      border: 1px solid rgba(0,158,219,0.3);
       border-radius: 7px;
       font-family: 'Inter', sans-serif;
       font-size: 12px;
@@ -398,8 +402,8 @@
       white-space: nowrap;
     }
     .compare-btn:hover {
-      background: rgba(47,107,255,0.28);
-      border-color: rgba(47,107,255,0.55);
+      background: rgba(0,158,219,0.28);
+      border-color: rgba(0,158,219,0.55);
       color: #fff;
     }
     .compare-btn:active { transform: translateY(1px); }
@@ -500,7 +504,7 @@
       background: var(--navy);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 14px;
-      box-shadow: 0 8px 32px rgba(11,18,32,0.45), 0 2px 8px rgba(11,18,32,0.3);
+      box-shadow: 0 8px 32px rgba(15,23,42,0.45), 0 2px 8px rgba(15,23,42,0.3);
       display: flex;
       align-items: center;
       gap: 12px;
@@ -579,13 +583,13 @@
     .select-bar-clear:hover { color: #fff; background: rgba(255,255,255,0.06); }
 
     /* Row selected state */
-    .fund-table tbody tr.row-selected { background: rgba(47,107,255,0.1); }
+    .fund-table tbody tr.row-selected { background: rgba(0,158,219,0.1); }
     .fund-table tbody tr.row-selected td:first-child { border-left: 2px solid var(--blue); }
 
     /* Compare button — toggle to "selected" state */
     .compare-btn.is-selected {
-      background: rgba(47,107,255,0.2);
-      border-color: rgba(47,107,255,0.5);
+      background: rgba(0,158,219,0.2);
+      border-color: rgba(0,158,219,0.5);
       color: #7EB3FF;
     }
 
@@ -616,14 +620,14 @@
   <nav>
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
-        <img src="fundfndr-logo.svg" alt="FundFndr" />
+        <img src="fundfndr-logo-white.svg" alt="FundFndr" />
       </a>
       <ul class="nav-links">
-        <li><a href="http://localhost:3000/index.html">Home</a></li>
-        <li><a href="http://localhost:3000/compare.html">Compare</a></li>
-        <li><a href="http://localhost:3000/etfs.html" class="active">ETFs</a></li>
-        <li><a href="http://localhost:3000/mutual-funds.html">Mutual Funds</a></li>
-        <li><a href="http://localhost:3000/screener.html">Screener</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="etfs.html" class="active">Browse Funds</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="screener.html">Impact Finder</a></li>
+        <li><a href="portfolio.html">Portfolio Scan</a></li>
         <li><a href="#">Blog</a></li>
       </ul>
       <div class="nav-actions">
@@ -639,9 +643,9 @@
       <div class="breadcrumb">
         <a href="index.html">Home</a>
         <span style="opacity:0.5;">›</span>
-        <span>ETFs</span>
+        <span>Browse Funds</span>
       </div>
-      <h1>ETFs</h1>
+      <h1>Browse Funds</h1>
       <p>Browse and compare exchange-traded funds — track performance, expenses, and assets across every major category.</p>
 
       <div class="header-controls">
@@ -760,12 +764,12 @@
         <div class="footer-copy">© 2026 FundFndr. For informational purposes only.</div>
       </div>
       <ul class="footer-links">
-        <li><a href="http://localhost:3000/index.html">Home</a></li>
-        <li><a href="http://localhost:3000/compare.html">Compare</a></li>
-        <li><a href="http://localhost:3000/etfs.html">ETFs</a></li>
-        <li><a href="http://localhost:3000/mutual-funds.html">Mutual Funds</a></li>
-        <li><a href="http://localhost:3000/screener.html">Screener</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="etfs.html">ETFs</a></li>
+        <li><a href="mutual-funds.html">Mutual Funds</a></li>
+        <li><a href="screener.html">Screener</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li><li><a href="#">Blog</a></li>
       </ul>
     </div>
   </footer>
@@ -1195,5 +1199,18 @@
   })();
   </script>
 
+  <script src="/chat-widget.js"></script>
+
+  <script>
+    (function() {
+      const nav = document.querySelector('nav');
+      if (!nav) return;
+      function onScroll() {
+        nav.classList.toggle('nav-scrolled', window.scrollY > 8);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 </body>
 </html>

@@ -14,17 +14,17 @@
     :root {
       --bg:         #FAFAF8;
       --white:      #FFFFFF;
-      --navy:       #0B1220;
+      --navy:       #0F172A;
       --navy-2:     #16253D;
       --navy-3:     #1C2E4A;
-      --text:       #0B1220;
+      --text:       #0F172A;
       --text-2:     #6B7280;
       --text-3:     #9CA3AF;
       --border:     #E6E8EE;
       --border-2:   #D1D5DB;
-      --blue:       #2F6BFF;
-      --blue-light: #7EB3FF;
-      --blue-soft:  #DDE8FF;
+      --blue:       #009EDB;
+      --blue-light: #5BC4EE;
+      --blue-soft:  #CCF0FF;
       --green:      #34D399;
       --violet:     #A78BFA;
     }
@@ -52,7 +52,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(250,250,248,0.95);
+      background: rgba(15,23,42,0.96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -87,8 +87,8 @@
       border-radius: 6px;
       transition: color 0.15s, background 0.15s;
     }
-    .nav-links a:hover { color: var(--navy); background: rgba(11,18,32,0.05); }
-    .nav-links a.active { color: var(--navy); font-weight: 500; background: rgba(11,18,32,0.05); }
+    .nav-links a:hover { color: rgba(255,255,255,0.95); background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: #fff; font-weight: 500; background: rgba(255,255,255,0.08); }
 
     .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
@@ -99,7 +99,11 @@
       border-radius: 6px;
       transition: color 0.15s;
     }
-    .nav-login:hover { color: var(--navy); }
+    .nav-login:hover { color: #fff; }
+    nav.nav-scrolled {
+      border-bottom-color: rgba(255,255,255,0.1);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55);
+    }
 
     .btn-primary {
       display: inline-flex;
@@ -115,9 +119,9 @@
       border: none;
       cursor: pointer;
       transition: opacity 0.15s, box-shadow 0.15s;
-      box-shadow: 0 1px 3px rgba(47,107,255,0.3);
+      box-shadow: 0 1px 3px rgba(0,158,219,0.3);
     }
-    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(47,107,255,0.35); }
+    .btn-primary:hover { opacity: 0.88; box-shadow: 0 4px 12px rgba(0,158,219,0.35); }
     .btn-primary:active { opacity: 0.75; }
 
     /* ── Page Header ──────────────────────────────────────── */
@@ -208,7 +212,7 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      box-shadow: 0 1px 4px rgba(11,18,32,0.04);
+      box-shadow: 0 1px 4px rgba(15,23,42,0.04);
     }
 
     .search-bar-label {
@@ -280,7 +284,7 @@
     .search-input::placeholder { color: var(--text-3); }
     .search-input:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(47,107,255,0.1);
+      box-shadow: 0 0 0 3px rgba(0,158,219,0.1);
     }
 
     .add-fund-btn {
@@ -290,7 +294,7 @@
       padding: 8px 14px;
       background: var(--blue-soft);
       color: var(--blue);
-      border: 1px solid rgba(47,107,255,0.22);
+      border: 1px solid rgba(0,158,219,0.22);
       border-radius: 8px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
@@ -299,7 +303,7 @@
       transition: background 0.15s, border-color 0.15s;
       white-space: nowrap;
     }
-    .add-fund-btn:hover { background: rgba(47,107,255,0.14); border-color: var(--blue); }
+    .add-fund-btn:hover { background: rgba(0,158,219,0.14); border-color: var(--blue); }
     .add-fund-btn:active { transform: translateY(1px); }
 
     .fund-dropdown {
@@ -310,7 +314,7 @@
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(11,18,32,0.12), 0 2px 6px rgba(11,18,32,0.08);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.12), 0 2px 6px rgba(15,23,42,0.08);
       z-index: 200;
       overflow: hidden;
       display: none;
@@ -365,8 +369,8 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow:
-        0 2px 8px rgba(11,18,32,0.12),
-        0 12px 40px rgba(11,18,32,0.22),
+        0 2px 8px rgba(15,23,42,0.12),
+        0 12px 40px rgba(15,23,42,0.22),
         0 0 0 1px rgba(255,255,255,0.04);
     }
 
@@ -425,10 +429,10 @@
     .fund-card:last-child { border-right: none; }
     .fund-card:hover { background: rgba(255,255,255,0.025); }
 
-    .fund-card.col-selected { background: rgba(47,107,255,0.12) !important; outline: 2px solid rgba(47,107,255,0.4); outline-offset: -2px; cursor: pointer; }
+    .fund-card.col-selected { background: rgba(0,158,219,0.12) !important; outline: 2px solid rgba(0,158,219,0.4); outline-offset: -2px; cursor: pointer; }
 
-    .mh-cell.col-selected { background: rgba(47,107,255,0.18); }
-    .metric-val.col-selected { background: rgba(47,107,255,0.08); color: #fff; }
+    .mh-cell.col-selected { background: rgba(0,158,219,0.18); }
+    .metric-val.col-selected { background: rgba(0,158,219,0.08); color: #fff; }
 
     .card-top {
       display: flex;
@@ -694,7 +698,7 @@
       transition: background 0.15s;
     }
     .summary-cell:last-child { border-right: none; }
-    .summary-cell.col-selected { background: rgba(47,107,255,0.08); }
+    .summary-cell.col-selected { background: rgba(0,158,219,0.08); }
 
     .sum-sym {
       font-size: 11px;
@@ -809,14 +813,14 @@
   <nav>
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
-        <img src="fundfndr-logo.svg" alt="FundFndr" />
+        <img src="fundfndr-logo-white.svg" alt="FundFndr" />
       </a>
       <ul class="nav-links">
-        <li><a href="http://localhost:3000/index.html">Home</a></li>
-        <li><a href="http://localhost:3000/compare.html" class="active">Compare</a></li>
-        <li><a href="http://localhost:3000/etfs.html">ETFs</a></li>
-        <li><a href="http://localhost:3000/mutual-funds.html">Mutual Funds</a></li>
-        <li><a href="http://localhost:3000/screener.html">Screener</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="etfs.html">Browse Funds</a></li>
+        <li><a href="compare.html" class="active">Compare</a></li>
+        <li><a href="screener.html">Impact Finder</a></li>
+        <li><a href="portfolio.html">Portfolio Scan</a></li>
         <li><a href="#">Blog</a></li>
       </ul>
       <div class="nav-actions">
@@ -1108,9 +1112,9 @@
 
     function renderSkeleton() {
       const n = symbols.length;
-      const cols = `grid-template-columns: 210px repeat(${n}, 1fr)`;
+      const cols = `grid-template-columns: repeat(${n}, 1fr)`;
       document.getElementById('fund-cards').style.cssText = cols;
-      document.getElementById('fund-cards').innerHTML = `<div class="fund-card-spacer"></div>` + Array(n).fill(0).map(() => `
+      document.getElementById('fund-cards').innerHTML = Array(n).fill(0).map(() => `
         <div class="skel-card">
           <div class="skel" style="width:60px; height:22px; margin-bottom:6px;"></div>
           <div class="skel" style="width:120px; height:11px; margin-bottom:18px;"></div>
@@ -1151,9 +1155,9 @@
       const months = getMonths(period);
       const n = symbols.length;
       const el = document.getElementById('fund-cards');
-      el.style.cssText = `grid-template-columns: 210px repeat(${n}, 1fr)`;
+      el.style.cssText = `grid-template-columns: repeat(${n}, 1fr)`;
 
-      el.innerHTML = `<div class="fund-card-spacer"></div>` + symbols.map((sym, i) => {
+      el.innerHTML = symbols.map((sym, i) => {
         const q = quotes[sym] || { symbol: sym, name: sym, type: '—' };
         const c = charts[sym]  || { closes: [] };
         const sliced = c.closes.slice(-months);
@@ -1298,19 +1302,20 @@
 
       // Right-align all series: pad shorter ones with null at the start
       const maxLen = Math.max(...raw.map(r => r.closes.length));
-      // Each fund gets a unique combo of dash pattern + width + opacity so overlaps are visible
+      // Each fund gets a unique line style so overlapping lines are distinguishable
       const LINE_STYLES = [
-        { dash: [14, 5],  width: 2,   opacity: 1    },  // long dashes
-        { dash: [2,  6],  width: 2,   opacity: 1    },  // small dots, wide gaps
-        { dash: [],       width: 1.5, opacity: 0.6  },  // solid but thin + faded (renders last = on top)
-        { dash: [8, 4, 2, 4], width: 2, opacity: 1  },  // dash-dot
-        { dash: [4,  3],  width: 2,   opacity: 1    },  // medium dashes
+        { dash: [],           width: 2,   opacity: 1 },  // solid
+        { dash: [6, 4],       width: 2,   opacity: 1 },  // dashed
+        { dash: [2, 4],       width: 2,   opacity: 1 },  // dotted
+        { dash: [10, 4, 2, 4], width: 2,  opacity: 1 },  // dash-dot
+        { dash: [4, 3],       width: 2,   opacity: 1 },  // short dash
       ];
       const datasets = raw.map(({ sym, i, closes }) => {
         const pad = maxLen - closes.length;
         const base = closes[0];
         const normalised = closes.map(v => parseFloat(((v / base - 1) * 100).toFixed(2)));
         const data = [...Array(pad).fill(null), ...normalised];
+        const priceData = [...Array(pad).fill(null), ...closes];
         const color = colorFor(i);
         const style = LINE_STYLES[i] || LINE_STYLES[0];
         // Apply opacity to hex color
@@ -1319,6 +1324,7 @@
         return {
           label: sym,
           data,
+          priceData,
           borderColor,
           backgroundColor: 'transparent',
           borderWidth: style.width,
@@ -1376,25 +1382,25 @@
       }));
 
       let hoveredIdx = null;
-      let pinnedIdx  = null; // set by column click
+      let pinnedIdx  = null; // set by card click, persists until another click
 
       function applyHighlight(chart, activeIdx) {
         if (activeIdx === hoveredIdx) return;
         hoveredIdx = activeIdx;
         chart.data.datasets.forEach((ds, idx) => {
           if (activeIdx === null) {
-            // No hover — restore original styles
+            // No selection — restore all lines to full original styles
             ds.borderColor = originalStyles[idx].borderColor;
             ds.borderWidth = originalStyles[idx].borderWidth;
             ds.borderDash  = originalStyles[idx].borderDash;
           } else if (idx === activeIdx) {
-            // Active line: full opacity, solid, thicker
+            // Selected/hovered line: full opacity, solid, slightly thicker
             ds.borderColor = colorFor(raw[idx].i);
             ds.borderWidth = 3;
             ds.borderDash  = [];
           } else {
-            // All others: faded
-            ds.borderColor = colorFor(raw[idx].i) + '1f';
+            // Others: slightly dimmed
+            ds.borderColor = colorFor(raw[idx].i) + '55';
             ds.borderWidth = originalStyles[idx].borderWidth;
             ds.borderDash  = originalStyles[idx].borderDash;
           }
@@ -1402,7 +1408,7 @@
         chart.update('none');
       }
 
-      // Expose so applyColHighlight can pin a line by symbol index
+      // Called by applyColHighlight when a card is clicked — pin that line
       setChartLine = (colIdx) => {
         if (!perfChart) return;
         pinnedIdx = colIdx !== null
@@ -1444,7 +1450,7 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: 'rgba(11,18,32,0.92)',
+              backgroundColor: 'rgba(15,23,42,0.92)',
               titleColor: 'rgba(255,255,255,0.5)',
               bodyColor: '#fff',
               borderColor: 'rgba(255,255,255,0.1)',
@@ -1455,7 +1461,9 @@
               callbacks: {
                 label: ctx => {
                   const v = ctx.parsed.y;
-                  return ` ${ctx.dataset.label}: ${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
+                  const price = ctx.dataset.priceData?.[ctx.dataIndex];
+                  const priceStr = price != null ? `  $${price.toFixed(2)}` : '';
+                  return ` ${ctx.dataset.label}:  ${v >= 0 ? '+' : ''}${v.toFixed(2)}%${priceStr}`;
                 },
               },
             },
@@ -1606,7 +1614,7 @@
     // ── Events ────────────────────────────────────────────────
 
     // Column highlight — click fund card or header to select full column
-    let selectedCol = '0'; // default: first fund always highlighted
+    let selectedCol = null; // no default — all lines show equally on load
     function applyColHighlight() {
       document.querySelectorAll('[data-col]').forEach(el => {
         el.classList.toggle('col-selected', selectedCol !== null && el.dataset.col === selectedCol);
@@ -1617,7 +1625,8 @@
       const target = e.target.closest('[data-col]');
       if (!target) { return; }
       const col = target.dataset.col;
-      selectedCol = col; // always set, never deselect to null
+      // Toggle: clicking the already-selected card deselects it
+      selectedCol = selectedCol === col ? null : col;
       applyColHighlight();
     });
 
@@ -1814,5 +1823,18 @@
   })();
   </script>
 
+  <script src="/chat-widget.js"></script>
+
+  <script>
+    (function() {
+      const nav = document.querySelector('nav');
+      if (!nav) return;
+      function onScroll() {
+        nav.classList.toggle('nav-scrolled', window.scrollY > 8);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
