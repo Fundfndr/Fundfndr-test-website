@@ -1081,6 +1081,42 @@
   let holdings = [];   // array of ticker strings
 
   /* ════════════════════════════════════════
+     AUTO-LOAD FROM PORTFOLIO SCAN
+  ════════════════════════════════════════ */
+  (function loadFromPortfolio() {
+    const saved = localStorage.getItem('fundfndr_portfolio_tickers');
+    if (!saved) return;
+    try {
+      const tickers = JSON.parse(saved);
+      if (!Array.isArray(tickers) || tickers.length === 0) return;
+      localStorage.removeItem('fundfndr_portfolio_tickers');
+      // Pre-populate holdings
+      holdings = tickers;
+      renderChips();
+      updateGenerateBtn();
+      // Show a notice
+      const notice = document.createElement('div');
+      notice.id = 'portfolio-notice';
+      notice.style.cssText = `
+        display:flex;align-items:center;gap:10px;
+        background:rgba(0,158,219,0.1);border:1px solid rgba(0,158,219,0.25);
+        border-radius:10px;padding:11px 16px;margin-top:12px;
+        font-size:13px;color:rgba(255,255,255,0.7);
+      `;
+      notice.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+          <circle cx="8" cy="8" r="6.5" stroke="#5BC4EE" stroke-width="1.3"/>
+          <path d="M8 5.5V9" stroke="#5BC4EE" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="11" r="0.8" fill="#5BC4EE"/>
+        </svg>
+        <span><strong style="color:#5BC4EE;">${tickers.length} holdings loaded</strong> from your Portfolio Scan. Select your SDG goals above and generate your report.</span>
+      `;
+      const holdingsArea = document.querySelector('.holdings-input-area');
+      holdingsArea.parentNode.insertBefore(notice, holdingsArea.nextSibling);
+    } catch(e) {}
+  })();
+
+  /* ════════════════════════════════════════
      NAV SCROLL
   ════════════════════════════════════════ */
   const nav = document.getElementById('main-nav');

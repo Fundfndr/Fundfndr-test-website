@@ -486,6 +486,68 @@
 
     .hidden { display: none !important; }
 
+    /* ── Impact Report CTA ── */
+    .impact-report-cta {
+      margin: 56px 0 0;
+      background: var(--navy);
+      border-radius: 20px;
+      padding: 40px 48px;
+      display: flex; align-items: center; gap: 40px;
+      position: relative; overflow: hidden;
+    }
+    .impact-report-cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 0% 50%, rgba(0,158,219,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cta-icon-wrap {
+      flex-shrink: 0; width: 64px; height: 64px; border-radius: 16px;
+      background: rgba(0,158,219,0.12); border: 1px solid rgba(0,158,219,0.2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cta-body { flex: 1; min-width: 0; }
+    .cta-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--blue-light); margin-bottom: 8px;
+    }
+    .cta-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px; font-weight: 700; color: #fff;
+      margin-bottom: 8px; line-height: 1.2;
+    }
+    .cta-sub {
+      font-size: 14px; color: rgba(255,255,255,0.48); line-height: 1.6; max-width: 480px;
+    }
+    .cta-pills {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;
+    }
+    .cta-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11.5px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .cta-pill-flag { background: rgba(220,38,38,0.15); color: #F87171; border: 1px solid rgba(220,38,38,0.25); }
+    .cta-pill-align { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.25); }
+    .cta-pill-gap { background: rgba(251,191,36,0.12); color: #FCD34D; border: 1px solid rgba(251,191,36,0.25); }
+    .cta-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+    .btn-impact-report {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+      padding: 13px 24px; border-radius: 10px; border: none; cursor: pointer;
+      transition: opacity 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,158,219,0.4);
+      white-space: nowrap;
+    }
+    .btn-impact-report:hover { opacity: 0.88; box-shadow: 0 6px 28px rgba(0,158,219,0.55); }
+    .btn-impact-report svg { flex-shrink: 0; }
+    .cta-note { font-size: 11.5px; color: rgba(255,255,255,0.28); text-align: center; }
+    @media (max-width: 768px) {
+      .impact-report-cta { flex-direction: column; align-items: flex-start; padding: 28px 24px; gap: 24px; }
+      .cta-actions { align-items: stretch; width: 100%; }
+      .btn-impact-report { justify-content: center; }
+    }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .footer-top { grid-template-columns: 1fr; }
@@ -714,6 +776,38 @@
         <h2 class="section-title">Coverage Gaps</h2>
         <p class="section-sub">SDGs your portfolio doesn't currently address — with suggested funds to fill each gap.</p>
         <div class="gap-grid" id="gapGrid"></div>
+      </div>
+
+      <!-- Impact Report CTA -->
+      <div class="impact-report-cta">
+        <div class="cta-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M7 4h10l5 5v15a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke="#5BC4EE" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M17 4v6h5" stroke="#5BC4EE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 14h8M10 18h5" stroke="#5BC4EE" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="10.5" cy="11" r="1.5" fill="#5BC4EE"/>
+          </svg>
+        </div>
+        <div class="cta-body">
+          <div class="cta-label">Next step</div>
+          <div class="cta-title">Generate your SDG Impact Report</div>
+          <div class="cta-sub">Turn this scan into a personalized PDF — showing flagged holdings, aligned funds, and SDG coverage gaps. Shareable with advisors or clients.</div>
+          <div class="cta-pills">
+            <span class="cta-pill cta-pill-flag">⚠️ Flagged holdings</span>
+            <span class="cta-pill cta-pill-align">✅ Aligned holdings</span>
+            <span class="cta-pill cta-pill-gap">📊 SDG coverage</span>
+          </div>
+        </div>
+        <div class="cta-actions">
+          <button class="btn-impact-report" id="btnGoImpactReport">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <path d="M3.5 5V2.5h8V5M2.5 5h10a.5.5 0 0 1 .5.5v4.5a.5.5 0 0 1-.5.5H12V8.5H3v2H2a.5.5 0 0 1-.5-.5V5.5A.5.5 0 0 1 2.5 5Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 8.5h9V12H3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+            </svg>
+            Generate Impact Report
+          </button>
+          <div class="cta-note">Your holdings carry over automatically</div>
+        </div>
       </div>
 
     </div>
@@ -1184,6 +1278,15 @@
       document.getElementById('tickerInput').value = '';
       fileInput.value = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.getElementById('btnGoImpactReport').addEventListener('click', () => {
+      const text = document.getElementById('tickerInput').value.trim();
+      const tickers = text ? parseTickerText(text) : [];
+      if (tickers.length > 0) {
+        localStorage.setItem('fundfndr_portfolio_tickers', JSON.stringify(tickers));
+      }
+      window.location.href = 'impact-report.html';
     });
 
     // ── Tab switching ──────────────────────────────────────────────────────────
