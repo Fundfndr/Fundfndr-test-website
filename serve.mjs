@@ -177,7 +177,17 @@ const server = http.createServer(async (req, res) => {
       return;
     }
     const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+    const isImmutable = ['.woff', '.woff2', '.ttf', '.ico', '.svg'].includes(ext);
+    const isHtml = ext === '.html';
+    const cacheControl = isImmutable
+      ? 'public, max-age=31536000, immutable'
+      : isHtml
+        ? 'no-cache'
+        : 'public, max-age=86400';
+    res.writeHead(200, {
+      'Content-Type': MIME[ext] || 'application/octet-stream',
+      'Cache-Control': cacheControl,
+    });
     res.end(data);
   });
 });

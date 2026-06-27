@@ -19,7 +19,8 @@
   <title>Impact Report — FundFndr</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" /></noscript>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -85,7 +86,7 @@
     .nav-login:hover { color: #fff; }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--blue); color: #fff;
+      background: #006FA5; color: #fff;
       font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
       padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer;
       transition: opacity 0.15s, box-shadow 0.15s;
@@ -643,6 +644,7 @@
   </div>
 </nav>
 
+<main>
 <!-- ─── Report Toolbar (shown when report is ready) ─── -->
 <div class="report-toolbar">
   <div class="toolbar-inner">
@@ -904,6 +906,7 @@
 
 </div>
 <!-- ═══ /REPORT ═══ -->
+</main>
 
 <!-- Footer -->
 <footer class="site-footer">

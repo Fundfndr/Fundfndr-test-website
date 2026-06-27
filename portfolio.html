@@ -18,7 +18,8 @@
   <link rel="apple-touch-icon" href="favicon.svg" />
   <title>Portfolio Scan — FundFndr</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" /></noscript>
   <style>
     :root {
       --navy:       #0F172A;
@@ -79,7 +80,7 @@
     .nav-login:hover { color: #fff; }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--blue); color: #fff;
+      background: #006FA5; color: #fff;
       font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
       padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer;
       text-decoration: none;
@@ -95,10 +96,10 @@
     }
     .page-header-inner { max-width: 680px; margin: 0 auto; text-align: center; }
     .page-breadcrumb {
-      font-size: 12px; color: rgba(255,255,255,0.35);
+      font-size: 12px; color: rgba(255,255,255,0.6);
       letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 20px;
     }
-    .page-breadcrumb a { color: var(--blue-light); text-decoration: none; }
+    .page-breadcrumb a { color: var(--blue-light); text-decoration: underline; text-decoration-color: rgba(91,196,238,0.4); }
     .page-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2rem, 4vw, 3rem);
@@ -132,13 +133,13 @@
     }
     .dropzone-icon svg { width: 26px; height: 26px; color: var(--blue-light); }
     .dropzone-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 7px; }
-    .dropzone-sub { font-size: 13.5px; color: rgba(255,255,255,0.42); line-height: 1.65; }
+    .dropzone-sub { font-size: 13.5px; color: rgba(255,255,255,0.65); line-height: 1.65; }
     .dropzone-sub strong { color: var(--blue-light); font-weight: 500; }
     #fileInput { display: none; }
 
     .or-divider {
       display: flex; align-items: center; gap: 12px;
-      margin: 28px 0; color: rgba(255,255,255,0.28); font-size: 13px;
+      margin: 28px 0; color: rgba(255,255,255,0.55); font-size: 13px;
     }
     .or-divider::before, .or-divider::after {
       content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.09);
@@ -347,7 +348,7 @@
     }
     .page-tabs { max-width: 620px; margin: 0 auto; display: flex; }
     .page-tab {
-      font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,0.45);
+      font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,0.65);
       background: none; border: none; cursor: pointer;
       padding: 14px 20px; border-bottom: 2px solid transparent;
       font-family: 'Inter', sans-serif;
@@ -634,6 +635,7 @@
     </div>
   </nav>
 
+  <main>
   <!-- PAGE HEADER -->
   <section class="page-header">
     <div class="page-header-inner">
@@ -864,6 +866,8 @@
 
     </div>
   </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer>
