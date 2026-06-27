@@ -2,5 +2,6 @@ node_modules/
 temporary screenshots/
 *.pdf
 *.png
+!og-image.png
 .DS_Store
 .vercel
