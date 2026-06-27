@@ -3,6 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio Scan - Upload your stock and fund holdings to see which UN Sustainable Development Goals your portfolio supports and discover aligned alternatives." />
+  <meta name="keywords" content="portfolio scanner, SDG alignment, impact analysis, portfolio assessment, sustainable investing" />
+  <meta name="robots" content="index, follow" />
+  <meta name="canonical" content="https://fundfndr.com/portfolio.html" />
+  <meta property="og:title" content="Portfolio Scan — FundFndr" />
+  <meta property="og:description" content="Analyze your portfolio's impact alignment with UN Sustainable Development Goals." />
+  <meta property="og:url" content="https://fundfndr.com/portfolio.html" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Portfolio Scan — FundFndr" />
+  <meta name="twitter:description" content="Analyze your portfolio's SDG impact alignment." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
   <title>Portfolio Scan — FundFndr</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -486,6 +499,46 @@
 
     .hidden { display: none !important; }
 
+    /* ── Notification Toast ── */
+    .notification-toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+      background: #fff; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.16);
+      display: flex; align-items: center; gap: 12px;
+      max-width: 420px; animation: slideIn 0.3s ease-out;
+      font-size: 13.5px; color: var(--text-2);
+    }
+    .notification-toast.error {
+      background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA;
+    }
+    .notification-toast.success {
+      background: #ECFDF5; color: #065F46; border: 1px solid #BBFBEE;
+    }
+    .notification-toast.info {
+      background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE;
+    }
+    .notification-icon {
+      flex-shrink: 0; font-size: 18px; line-height: 1;
+    }
+    .notification-message {
+      flex: 1;
+    }
+    .notification-close {
+      flex-shrink: 0; background: none; border: none; color: inherit;
+      cursor: pointer; font-size: 16px; opacity: 0.6; transition: opacity 0.15s;
+      padding: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+    }
+    .notification-close:hover { opacity: 1; }
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(400px); opacity: 0; }
+    }
+    .notification-toast.removing { animation: slideOut 0.2s ease-in forwards; }
+
     /* ── Impact Report CTA ── */
     .impact-report-cta {
       margin: 56px 0 0;
@@ -844,8 +897,8 @@
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Company</div>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
           <a href="#">Trust Center</a>
           <a href="#">Contact Us</a>
         </div>
@@ -1246,12 +1299,37 @@
     });
     fileInput.addEventListener('change', () => { if (fileInput.files[0]) readFile(fileInput.files[0]); });
 
+    // Notification system
+    function showNotification(message, type = 'error', duration = 5000) {
+      const toast = document.createElement('div');
+      toast.className = `notification-toast ${type}`;
+      
+      const iconMap = { error: '⚠️', success: '✓', info: 'ℹ️' };
+      
+      toast.innerHTML = `
+        <span class="notification-icon">${iconMap[type] || '⚠️'}</span>
+        <span class="notification-message">${message}</span>
+        <button class="notification-close">✕</button>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      const closeBtn = toast.querySelector('.notification-close');
+      const removeToast = () => {
+        toast.classList.add('removing');
+        setTimeout(() => toast.remove(), 200);
+      };
+      
+      closeBtn.addEventListener('click', removeToast);
+      if (duration) setTimeout(removeToast, duration);
+    }
+
     function readFile(file) {
       const reader = new FileReader();
       reader.onload = e => {
         const tickers = parseCSV(e.target.result);
         if (tickers.length) renderResults(matchTickers(tickers));
-        else alert('No ticker symbols found. Try pasting tickers manually below.');
+        else showNotification('No ticker symbols found. Try pasting tickers manually below.', 'error');
       };
       reader.readAsText(file);
     }
