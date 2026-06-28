@@ -2,5 +2,5 @@
   <!-- Background circle -->
   <circle cx="32" cy="32" r="32" fill="#009EDB"/>
   <!-- FF monogram -->
-  <text x="32" y="42" font-family="Inter, sans-serif" font-size="36" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">F</text>
+  <text x="32" y="32" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">F</text>
 </svg>
