@@ -339,6 +339,7 @@
     .footer-bottom {
       padding-top: 24px; border-top: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
     }
     .footer-logo-sm {
       display: flex; align-items: center; gap: 8px;
@@ -363,6 +364,8 @@
       .footer-inner { padding: 0 20px; }
       .footer-top { grid-template-columns: 1fr; }
     }
+  
+    @media (max-width: 480px) { .nav-login { display: none; } }
   </style>
 </head>
 <body>
